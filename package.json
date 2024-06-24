@@ -1,14 +1,14 @@
 {
-  "name": "back-end",
+  "name": "WebFlix",
   "version": "1.0.0",
-  "description": "",
+  "description": "Movie streaming platform",
   "main": "app.js",
   "scripts": {
     "dev": "tsx watch src/app.ts"
   },
   "keywords": [],
   "author": "Rafael Souza Ribeiro",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "bcrypt": "^5.1.1",
