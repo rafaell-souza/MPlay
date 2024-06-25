@@ -6,8 +6,8 @@ export class Create {
     async handler(request: Request, response: Response): Promise<Response>{
         const {name, email, password, repeatPassword, phone, address}: ISignup = request.body;
 
-           const token =  await new CreateUser().execute({
-             name, email, password, repeatPassword, phone, address 
+           const token = await new CreateUser().execute({
+            name, email, password, repeatPassword, phone, address 
             });
 
             return response.status(201).json({ 
