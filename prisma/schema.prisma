@@ -12,4 +12,6 @@ model Account {
   name     String   @db.VarChar(50)
   email    String   @unique @db.VarChar(250)
   password String   @db.VarChar(70)
+  phone    String   @db.VarChar(20) @default("")
+  address  String   @db.VarChar(100) @default("")
 }

@@ -15,7 +15,9 @@ export class CreateUser {
                 data: {
                     name: user.name,
                     email: user.email,
-                    password: user.password
+                    password: user.password,
+                    phone: user.phone,
+                    address: user.address
                 }
             }) 
 
