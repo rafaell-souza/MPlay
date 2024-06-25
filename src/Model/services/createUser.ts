@@ -1,19 +1,25 @@
-import registers from "../Entity/registers.ts";
+import prisma from "../../../prisma/prisma.js";
 import { BadRequest } from "../errors.ts/status.ts";
 import { ISignup } from "../interfaces/registers.ts";
+import Jwt from "../Jwt/setJwt.ts";
 
-export class CreateUser{
-    async execute( user :ISignup ): Promise<void> {
+export class CreateUser {
+    async execute( user :ISignup ): Promise<string> {
 
-            if(!user.username || !user.email || !user.password){
-                throw new BadRequest("Please, fill all the fields!");
+            const EmailExists = await prisma.account.findFirst({ where: { email: user.email }});
+            if (EmailExists) {
+                throw new BadRequest("Email already exists!");
             }
-           else {
-            await registers.create({
-                username: user.username,
-                email: user.email,
-                password: user.password,
-            });
-        }
+
+            const newRegister = await prisma.account.create({
+                data: {
+                    name: user.name,
+                    email: user.email,
+                    password: user.password
+                }
+            }) 
+
+            const createAccessToken = new Jwt().setJwt(newRegister.id);
+            return createAccessToken;
     }
 }

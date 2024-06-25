@@ -10,6 +10,6 @@ export default function HandleError(
     const status = error.status != 500 ? error.status : 500;
     const message = status != 500 ? error.message : "Ops! Something went wrong!";
 
-    console.error(error);
+    status === 500 && console.log(error);
     response.status(status).json({message, success: error.success});
 }
