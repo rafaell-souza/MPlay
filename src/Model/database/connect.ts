@@ -1,10 +1,12 @@
 import { Sequelize } from "sequelize";
 
-export const connection = new Sequelize({
+const connection = new Sequelize({
     username: "postgres",
     password: "",
     database: "webflix",
     host: "localhost",
     dialect: "postgres",
-    logging: false,
+    logging: false
 });
+
+export default connection;

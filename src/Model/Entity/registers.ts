@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import { connection } from "../database/connect.ts";
+import connection from "../database/connect.ts";
 
 export default class Registers extends Model {}
 Registers.init({
