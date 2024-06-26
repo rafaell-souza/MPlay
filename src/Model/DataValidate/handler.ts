@@ -1,15 +1,9 @@
+import { ILogin, ISignup } from "../interfaces/registers.ts";
 import schema from "./schema.ts";
 
-interface CheckData {
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-    address: string;
-}
-
 export default class DataValidate {
-    static validate(data: CheckData) {
+    static validate(data: ISignup) {
         return schema.safeParse(data);
     }
 }
+
