@@ -3,7 +3,7 @@ import { IoSearchOutline } from "react-icons/io5";
 
 export default function Toolbar() {
     return (
-        <section className="bg-violet-950 h-full w-40 fixed flex flex-col items-center top-10 pt-8">
+        <section className="bg-violet-950 h-full w-40 fixed flex flex-col items-center top-10 pt-6">
 
             <form action="#" className="flex flex-col items-center">
      
