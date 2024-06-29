@@ -17,6 +17,7 @@ type Movie = {
 export default function Home() {
   const [mostRated, setMostRated] = useState<Movie[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const topRatedRef = useRef<HTMLDivElement>(null);
 
   const fetchMostRated = async (url: string) => {
     const response = await fetch(url);
@@ -42,10 +43,22 @@ export default function Home() {
       scrollRef.current.scrollLeft += 720;
     }
   };
+
+  const scrollLeftTopRated = () => {
+    if (topRatedRef.current) {
+      topRatedRef.current.scrollLeft -= 250;
+    }
+  }
+    const scrollRightTopRated = () => {
+        if (topRatedRef.current) {
+        topRatedRef.current.scrollLeft += 250;
+        }
+    }
+
   return (
     <>
       <button
-        className="w-10 h-[340px] absolute right-0 z-10 top-10 flex justify-end items-center bg-gradient-to-r from-transparent to-zinc-950 opacity-60" onClick={scrollRight}>
+        className="w-10 h-[340px] absolute right-0 z-10 top-10 flex justify-end items-center bg-gradient-to-r from-transparent to-zinc-950 opacity-90" onClick={scrollRight}>
         <MdArrowForwardIos className="h-10 w-6 text-white"/>
       </button>
 
@@ -63,7 +76,7 @@ export default function Home() {
       </div>
 
       <button
-        className="w-12 h-[340px] absolute left-40 z-10 top-10 flex justify-start items-center bg-gradient-to-l from-transparent to-zinc-950 opacity-60"
+        className="w-12 h-[340px] absolute left-40 z-10 top-10 flex justify-start items-center bg-gradient-to-l from-transparent to-zinc-950 opacity-90"
         onClick={scrollLeft}
       >
         <MdArrowBackIosNew className="h-10 w-6 text-white" />
@@ -74,7 +87,15 @@ export default function Home() {
             TOP RATED
         </h1>
         
-        <div className="relative left-40 flex top-12  overflow-x-auto w-80 w-4/5 bg-violet-950 overflow-y-none">
+        <button
+        className="w-10 h-[200px] top-[432px] absolute z-10 flex justify-end items-center bg-gradient-to-r from-transparent to-zinc-950  right-0"
+        onClick={scrollRightTopRated}>
+            <MdArrowForwardIos className="h-10 w-6 text-white"/>
+        </button>
+        
+        <div 
+        className="relative left-40 flex top-12 overflow-x-auto w-80 w-[730px] bg-violet-950 overflow-y-none"
+        ref={topRatedRef}>
             {mostRated.map((movie, index) => {
                 return (
                     <Card
@@ -85,6 +106,11 @@ export default function Home() {
                 );
             })}
         </div>
+        <button
+        className="w-12 h-[200px] top-[432px] absolute left-40 z-10 flex justify-start items-center bg-gradient-to-l from-transparent to-zinc-950"
+        onClick={scrollLeftTopRated}>
+            <MdArrowBackIosNew className="h-10 w-6 text-white"/>
+        </button>
     </>
   );
 }
