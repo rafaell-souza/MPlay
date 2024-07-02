@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import NavigateTo from "../Button/button";
 
 type BigCardProps = {
     title: string;
@@ -21,9 +21,12 @@ export default function bigCard({ title, image, id }: BigCardProps) {
 
                 <h1 className='text-white text-2xl font-bold mb-2'>{title}</h1>
                 
-                <Link to={`/details/${id}`} className="text-white bg-violet-950 w-32 p-3 rounded-lg flex justify-center mb-5 hover:opacity-70 shadow shadow-black ">
-                WATCH NOW
-                </Link>
+               <NavigateTo
+               link={`/details/${id}`}
+               style="w-32 p-2 mb-5"
+               >
+                    WATCH NOW
+               </NavigateTo>
 
             </div>
         </>

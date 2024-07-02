@@ -1,4 +1,5 @@
 import BigCard from "../Cards/big";
+import SmallCard from "../Cards/small";
 
 type MovieType = {
     title: string;
@@ -14,10 +15,12 @@ type HomeProps = {
 
 export default function Home({ playing }: HomeProps) {
     const topPlaying = playing.slice(0, 5);
+    const playingList = playing.slice(5, 20);
 
     return (
         <>
-            <section className="top-10 w-[680px] relative left-[227px] bg-red-700">
+            <section className="top-10 w-[666px] relative left-[227px] flex flex-col">
+
                 <div className="flex overflow-x-auto">
                     {topPlaying.map((movie) => (
                         <BigCard
@@ -28,6 +31,21 @@ export default function Home({ playing }: HomeProps) {
                         />
                     ))}
                 </div>
+
+                <h1 className="text-xl mt-10 text-violet-950 font-bold">PLAYING NOW</h1>
+
+                <div className="flex overflow-x-auto">
+                    {playingList.map((movie) => {
+                        return (
+                            <SmallCard
+                                key={movie.id}
+                                id={movie.id}
+                                poster_path={movie.poster_path}
+                            />
+                        )
+                    })}
+                </div>
+
             </section>
         </>
     );

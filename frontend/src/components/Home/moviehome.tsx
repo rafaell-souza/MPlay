@@ -27,8 +27,6 @@ export default function MovieHome() {
                 const url = `${playingUrl}?api_key=${key}`;
                 const movieList = await fetchData(url);
                 setMoviesPlaying(movieList);
-
-                console.log(movieList);
             }
             catch (error) {
                 console.error(error)
