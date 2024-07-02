@@ -5,7 +5,8 @@ const key: string = import.meta.env.VITE_TMDB_KEY;
 
 const playingUrl: string = import.meta.env.VITE_TMDB_NOW_PLAYING;
 const mostRatedUrl: string = import.meta.env.VITE_TMDB_MOST_RATED;
-const popularUrl: string = import.meta.env.VITE_TMDB_POPULAR
+const popularUrl: string = import.meta.env.VITE_TMDB_POPULAR;
+const upcomingUrl: string = import.meta.env.VITE_TMDB_UPCOMING;
 
 type MovieType = {
     title: string;
@@ -19,6 +20,7 @@ export default function MovieHome() {
     const [moviesPlaying, setMoviesPlaying] = useState<MovieType[]>([]);
     const [moviesTopRated, setMoviesTopRated] = useState<MovieType[]>([]);
     const [moviesPopular, setMoviesPopular] = useState<MovieType[]>([]);
+    const [moviesUpcoming, setMoviesUpcoming] = useState<MovieType[]>([]);
 
     async function fetchData(url: string): Promise<MovieType[]> {
         const response = await fetch(url);
@@ -38,9 +40,13 @@ export default function MovieHome() {
                 const url3 = `${popularUrl}?api_key=${key}`;
                 const movieList3 = await fetchData(url3);
 
+                const url4 = `${upcomingUrl}?api_key=${key}`;
+                const movieList4 = await fetchData(url4);
+
                 setMoviesPlaying(movieList);
                 setMoviesTopRated(movieList2);
                 setMoviesPopular(movieList3);
+                setMoviesUpcoming(movieList4);
             }
             catch (error) {
                 console.error(error)
@@ -53,5 +59,6 @@ export default function MovieHome() {
     playing={moviesPlaying} 
     mostRated={moviesTopRated} 
     popular={moviesPopular}
+    upcoming={moviesUpcoming}
     />;
 }
