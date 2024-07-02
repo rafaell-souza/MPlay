@@ -11,9 +11,11 @@ type MovieType = {
 
 type HomeProps = {
     playing: MovieType[];
+    mostRated: MovieType[];
+    popular: MovieType[];
 };
 
-export default function Home({ playing }: HomeProps) {
+export default function Home({ playing, mostRated, popular }: HomeProps) {
     const topPlaying = playing.slice(0, 5);
     const playingList = playing.slice(5, 20);
 
@@ -33,7 +35,6 @@ export default function Home({ playing }: HomeProps) {
                 </div>
 
                 <h1 className="text-xl mt-10 text-violet-950 font-bold">PLAYING NOW</h1>
-
                 <div className="flex overflow-x-auto">
                     {playingList.map((movie) => {
                         return (
@@ -44,6 +45,28 @@ export default function Home({ playing }: HomeProps) {
                             />
                         )
                     })}
+                </div>
+
+                <h2 className="text-xl mt-5 text-violet-950 font-bold">TOP RATED</h2>
+                <div className="flex overflow-x-auto">
+                    {mostRated.map((movie) => (
+                        <SmallCard
+                            key={movie.id}
+                            id={movie.id}
+                            poster_path={movie.poster_path}
+                        />
+                    ))}
+                </div>
+
+                <h2 className="text-xl mt-5 text-violet-950 font-bold">POPULAR</h2>
+                <div className="flex overflow-x-auto">
+                    {popular.map((movie) => (
+                        <SmallCard
+                            key={movie.id}
+                            id={movie.id}
+                            poster_path={movie.poster_path}
+                        />
+                    ))}
                 </div>
 
             </section>
