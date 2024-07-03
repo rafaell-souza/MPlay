@@ -3,27 +3,18 @@ import { Link } from 'react-router-dom';
 type SearchProps = {
     id: number;
     title: string;
-    release_date: string;
-    overview: string;
-    rate: number;
-    genres: string;
     image: string;
     onClick?: () => void;
 }
 
-export default function MediumCard({ id, title, release_date, overview, rate, genres, image, onClick }: SearchProps) {
+export default function MediumCard({ id, title, image, onClick }: SearchProps) {
     return (
         <Link to={`/details/${id}`}
               onClick={onClick}
-              className="">
-            <img src={image} alt={title} />
-            <div>
-                <h1>{title}</h1>
-                <p>{release_date}</p>
-                <p>{overview}</p>
-                <p>{rate}</p>
-                <p>{genres}</p>
-            </div>
+              className="flex flex-col  w-28 h-48 mb-1 bg-zinc-950 rounded">
+            <img src={image} alt={title} className='h-36 w-28 flex shrink-0' />
+
+                <h1 className='text-xs  py-1 mx-1 leading-none'>{title}</h1>
         </Link>
     )
 }

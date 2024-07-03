@@ -10,8 +10,6 @@ type Movie = {
     results: {
         id: number,
         vote_average: number,
-        genre_ids: number[],
-        overview: string,
         poster_path: string,
         release_date: string,
         title: string,
@@ -32,7 +30,6 @@ export default function MovieSearch() {
     const searchFunction = async (url: string): Promise<Movie> => {
         const response = await fetch(url);
         const data: Movie = await response.json();
-        console.log(data);
         return data;
     }
 
@@ -44,7 +41,6 @@ export default function MovieSearch() {
         setResults(data);
         setLoading(false);
     })();
-
 
     }, [search])
 
