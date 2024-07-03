@@ -19,7 +19,7 @@ export default function bigCard({ title, image, id }: BigCardProps) {
                 backgroundRepeat: 'no-repeat',
             }}>
 
-                <h1 className='text-white text-2xl font-bold mb-2'>{title}</h1>
+                <h1 className='text-white text-xl font-bold mb-2'>{title}</h1>
                 
                <NavigateTo
                link={`/details/${id}`}

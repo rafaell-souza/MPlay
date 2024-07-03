@@ -17,7 +17,7 @@ export default function SmallCard({id, poster_path}: CardProps) {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
        }}
-       className="h-40 w-32 flex shrink-0 bg-blue-500 hover:opacity-70 mr-[1px] transition-opacity duration-200 ease-in-out"
+       className="h-40 w-28 flex shrink-0 bg-blue-500 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out shadow shadow--violet"
        >
         </Link>
     )

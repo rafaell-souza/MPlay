@@ -22,9 +22,9 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
 
     return (
         <>
-            <section className="top-10 w-[666px] relative left-[227px] flex flex-col">
+            <section className="top-10 w-[666px] relative left-[227px] flex flex-col bg-black">
 
-                <div className="flex overflow-x-auto">
+                <div className="flex overflow-x-auto scrollable-scrollbar">
                     {topPlaying.map((movie) => (
                         <BigCard
                             key={movie.id}
@@ -35,8 +35,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     ))}
                 </div>
 
-                <h1 className="text-xl mt-10 text-violet-950 font-bold">PLAYING NOW</h1>
-                <div className="flex overflow-x-auto">
+                <h1 className="text-xl mt-10 text-white font-bold">PLAYING NOW</h1>
+                <div className="flex overflow-x-auto scrollable-scrollbar">
                     {playingList.map((movie) => {
                         return (
                             <SmallCard
@@ -48,8 +48,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     })}
                 </div>
 
-                <h2 className="text-xl mt-5 text-violet-950 font-bold">TOP RATED</h2>
-                <div className="flex overflow-x-auto">
+                <h2 className="text-xl mt-5 text-white font-bold">TOP RATED</h2>
+                <div className="flex overflow-x-auto scrollable-scrollbar">
                     {mostRated.map((movie) => (
                         <SmallCard
                             key={movie.id}
@@ -59,8 +59,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     ))}
                 </div>
 
-                <h2 className="text-xl mt-5 text-violet-950 font-bold">POPULAR</h2>
-                <div className="flex overflow-x-auto">
+                <h3 className="text-xl mt-5 text-white font-bold">POPULAR</h3>
+                <div className="flex overflow-x-auto scrollable-scrollbar">
                     {popular.map((movie) => (
                         <SmallCard
                             key={movie.id}
@@ -70,8 +70,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     ))}
                 </div>
 
-                <h2 className="text-xl mt-5 text-violet-950 font-bold">UPCOMING</h2>
-                <div className="flex overflow-x-auto">
+                <h4 className="text-xl mt-5 text-white font-bold">UPCOMING</h4>
+                <div className="flex overflow-x-auto scrollable-scrollbar">
                     {upcoming.map((movie) => (
                         <SmallCard
                             key={movie.id}

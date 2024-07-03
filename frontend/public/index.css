@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@tailwind tailwind-scrollbar;
+
 * {
     margin: 0;
     padding: 0;
@@ -11,4 +13,19 @@
 
 body {
     font-family: "Roboto", sans-serif;
+    background: rgb(0, 0, 0);
+}
+
+body::-webkit-scrollbar {
+    width: 5px;
+    background: rgb(0, 0, 0);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgb(45, 45, 45);
+}
+
+.scrollable-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(20, 20, 20) rgb(6, 6, 6);
 }
