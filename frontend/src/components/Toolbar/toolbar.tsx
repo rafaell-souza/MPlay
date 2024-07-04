@@ -14,7 +14,11 @@ export default function Toolbar() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        navigate("/search")
+        if(inputValue.length === 0) {
+            return;
+        }
+
+        navigate("/search", {replace: true})
         handleInput(inputValue)
         setInputValue("")
     }

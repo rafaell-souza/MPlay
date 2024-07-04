@@ -1,5 +1,6 @@
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 type CardProps = {
     id: number;
@@ -10,15 +11,20 @@ export default function SmallCard({id, poster_path}: CardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
 
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original"
+    const navigate = useNavigate();
 
     const handleImageLoaded = () => {
         setImageLoaded(true);
     }
 
+    function handleClick() {
+        navigate(`/details`, { replace: true });
+    }
+
     return (
        <div
-       className="h-40 w-28 flex shrink-0 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out "
-       >
+       className="h-40 w-28 flex shrink-0 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out"
+        onClick={handleClick}>
         {
             !imageLoaded && (
                 <div className="w-full h-full flex items-center justify-center">

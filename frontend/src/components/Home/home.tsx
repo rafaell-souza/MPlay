@@ -22,7 +22,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
 
     return (
         <>
-            <section className="top-10 w-[666px] relative left-[227px] flex flex-col bg-black">
+            <section className="top-10 w-[666px] relative left-[234px] flex flex-col bg-black">
                 <div className="flex overflow-x-auto scrollable-scrollbar">
                     {topPlaying.map((movie) => (
                         <BigCard
