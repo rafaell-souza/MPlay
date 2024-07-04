@@ -1,6 +1,6 @@
 import Search from "./search"
-import Toolbar from "../Toolbar/toolbar";
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { InputContext } from "../Context/inputContext"
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -19,13 +19,10 @@ type Movie = {
 }
 
 export default function MovieSearch() {
-    const [search, setSearch] = useState<string>("");
     const [results, setResults] = useState<Movie | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const onSubmit = (input: string) => {
-        setSearch(input);
-    }
+    const { input } = useContext(InputContext);
 
     const searchFunction = async (url: string): Promise<Movie> => {
         const response = await fetch(url);
@@ -36,17 +33,16 @@ export default function MovieSearch() {
     useEffect(() => {
         setLoading(true);
         (async () => {
-            const url = `${searchUrl}?api_key=${key}&query=${search}&page=${1}`;
+            const url = `${searchUrl}?api_key=${key}&query=${input}&page=${1}`;
         const data = await searchFunction(url);
         setResults(data);
         setLoading(false);
     })();
 
-    }, [search])
+    }, [input])
 
     return (
         <>
-        <Toolbar onSubmit={onSubmit} />
         <Search data={results} loading={loading}/>
         </>
     )

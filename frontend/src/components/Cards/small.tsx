@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useState } from 'react';
 
 type CardProps = {
     id: number;
@@ -6,19 +7,32 @@ type CardProps = {
 }
 
 export default function SmallCard({id, poster_path}: CardProps) {
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original"
 
+    const handleImageLoaded = () => {
+        setImageLoaded(true);
+    }
+
     return (
-       <Link 
-       to={`/details/${id}`} 
-       style={{
-        backgroundImage: `url(${tmdbImageUrl+poster_path})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-       }}
-       className="h-40 w-28 flex shrink-0 bg-blue-500 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out shadow shadow--violet"
+       <div
+       className="h-40 w-28 flex shrink-0 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out "
        >
-        </Link>
+        {
+            !imageLoaded && (
+                <div className="w-full h-full flex items-center justify-center">
+                    <AiOutlineLoading3Quarters className="text-white text-4xl animate-spin" />
+                </div>
+            )}
+                <img
+                    src={tmdbImageUrl + poster_path}
+                    alt="poster"
+                    className={`w-full h-full object-cover object-center ${imageLoaded ? 'visible' : 'hidden'}`}
+                    onLoad={handleImageLoaded}
+                />
+                
+            
+        </div>
     )
 }

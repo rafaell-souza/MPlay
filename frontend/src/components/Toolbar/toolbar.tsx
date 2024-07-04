@@ -1,18 +1,22 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { InputContext } from "../Context/inputContext";
 
-export default function Toolbar({ onSubmit }: { onSubmit: (data: string) => void}) {
+export default function Toolbar() {
 
-    const [input, setInput] = useState<string>("");
+    const [inputValue, setInputValue] = useState<string>("");
+
+    const { handleInput } = useContext(InputContext);
     const navigate = useNavigate();
-
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit(input);
-        setInput("")
+
         navigate("/search")
+        handleInput(inputValue)
+        setInputValue("")
     }
 
     return (
@@ -23,8 +27,8 @@ export default function Toolbar({ onSubmit }: { onSubmit: (data: string) => void
                 <input 
                 type="text" 
                 className="rounded-xl px-2 h-7 w-36 bg-zinc-900 text-zinc-300 outline outline-1 outline-zinc-800 placeholder:text-sm text-sm" 
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 placeholder="search movie..." />
 
                 <button className="bg-zinc-900 rounded-full p-1 outline outline-zinc-900 hover:opacity-70">
