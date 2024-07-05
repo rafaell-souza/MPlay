@@ -37,8 +37,6 @@ export default function SmallCard({id, poster_path}: CardProps) {
                     className={`w-full h-full object-cover object-center ${imageLoaded ? 'visible' : 'hidden'}`}
                     onLoad={handleImageLoaded}
                 />
-                
-            
         </div>
     )
 }
