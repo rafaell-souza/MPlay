@@ -1,6 +1,8 @@
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { MovieContext } from '../Context/MovieContext';
 
 type CardProps = {
     id: number;
@@ -9,6 +11,8 @@ type CardProps = {
 
 export default function SmallCard({id, poster_path}: CardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
+
+    const { handleMovieId } = useContext(MovieContext);
 
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original"
     const navigate = useNavigate();
@@ -19,6 +23,7 @@ export default function SmallCard({id, poster_path}: CardProps) {
 
     function handleClick() {
         navigate(`/details`, { replace: true });
+        handleMovieId(id);
     }
 
     return (

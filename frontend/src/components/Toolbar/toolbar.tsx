@@ -2,7 +2,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
-import { InputContext } from "../Context/inputContext";
+import { InputContext } from "../Context/InputContext";
 
 export default function Toolbar() {
 

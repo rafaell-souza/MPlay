@@ -1,6 +1,6 @@
 import Search from "./search"
 import { useState, useEffect, useContext } from "react"
-import { InputContext } from "../Context/inputContext"
+import { InputContext } from "../Context/InputContext"
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 

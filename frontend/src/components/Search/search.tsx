@@ -71,7 +71,7 @@ export default function Search({ data, loading, changePage }: { data: Movie | nu
                 </div>
 
                 <div className="flex justify-center items-start">
-                    {!loading && data && data.total_results > 0 && (
+                    {!loading && data && data.total_results > 0 && pages.length > 1 && (
                         <>
                             <FaCaretLeft
                                 onClick={() => currentPage > 1 && HandleClick(currentPage - 1)}

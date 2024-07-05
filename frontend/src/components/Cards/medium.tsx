@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router"
+import { useContext } from 'react';
+import { MovieContext } from '../Context/MovieContext';
 
 type SearchProps = {
     id: number;
@@ -9,8 +11,11 @@ type SearchProps = {
 export default function MediumCard({ id, title, image }: SearchProps) {
     const navigate = useNavigate()
 
+    const { handleMovieId } = useContext(MovieContext);
+
     function onClick() {
         navigate(`/details`, {replace: true})
+        handleMovieId(id)
     }
 
     return (

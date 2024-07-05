@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import NavigateTo from '../Button/button';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { useContext } from 'react';
+import { MovieContext } from '../Context/MovieContext';
+import { useNavigate } from 'react-router';
 
 type BigCardProps = {
     title: string;
@@ -12,8 +14,17 @@ export default function BigCard({ title, image, id }: BigCardProps) {
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original";
     const [imageLoaded, setImageLoaded] = useState(false);
 
+    const { handleMovieId } = useContext(MovieContext);
+    const navigate = useNavigate();
+
     const handleImageLoaded = () => {
         setImageLoaded(true);
+    }
+
+    function onClick() {
+        handleMovieId(id);
+        navigate(`/details`, { replace: true });
+
     }
 
     return (
@@ -34,6 +45,7 @@ export default function BigCard({ title, image, id }: BigCardProps) {
             <h1 className="text-white text-xl font-bold mb-2 relative z-20">{title}</h1>
             
             <div
+                onClick={onClick}
                 className="w-32 p-2 mb-5 relative z-20 bg-zinc-900 text-white text-center rounded cursor-pointer hover:bg-zinc-950 transition ease-in-out duration-200"
             >
                 WATCH NOW
