@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 type MovieType = {
     poster_path: string;
-    genres: number[];
+    genres: { id: number, name: string }[];
     vote_average: number;
     title: string;
     original_language: string;
@@ -18,7 +18,6 @@ type DetailsProps = {
 }
 
 export default function Details({ data }: DetailsProps) {
-
     const baseImageUrl = "https://image.tmdb.org/t/p/original";
 
     return (
@@ -28,8 +27,7 @@ export default function Details({ data }: DetailsProps) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
         >
-        <section className=" relative top-12 left-[230px] text-white text-white w-[670px] h-[300px] flex flex-col">
-
+        <section className=" relative top-12 left-[240px] text-white text-white w-[670px] h-[300px] flex flex-col">
             <div className="flex mt-6">
                 <img
                     className="w-[140px] h-[200px] border border-zinc-300"
@@ -39,11 +37,23 @@ export default function Details({ data }: DetailsProps) {
                 <div className="p-5">
                     <h1 className="font-bold text-2xl">{data?.title}</h1>
 
-                    <p className="text-sm">{data?.overview}</p>
-                </div>
+                    <div className="flex items-center ">
+                        <span className="font-bold">Genres: </span>
+                        {
+                           data && data.genres && (
+                            data?.genres.map((genre) => {
+                                return <span key={genre.id} className="ml-2 text-xs rounded-full border px-2 border-zinc-600 hover:bg-zinc-800 py-[1px]">{genre.name}</span>
+                            })
+                           )
+                        }
+                    </div>
+
+                    <div className="flex items-center">
+                        <p className=""><span className="font-bold">Rate: </span>{data?.vote_average.toFixed(1)}</p>
+                    </div>
+                </div> 
 
             </div>
-
         </section>
         </motion.div>
     )

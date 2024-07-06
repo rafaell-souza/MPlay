@@ -1,9 +1,8 @@
 import Search from "./search"
-import { useState, useEffect, useContext } from "react"
-import { InputContext } from "../Context/InputContext"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
-
 const searchUrl = import.meta.env.VITE_TMDB_SEARCH
 
 type Movie = {
@@ -24,7 +23,7 @@ export default function MovieSearch() {
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
 
-    const { input } = useContext(InputContext);
+    const { movie } = useParams<{ movie: string }>();
 
     function ChangePage(page: number) {
         setPage(page);
@@ -38,14 +37,16 @@ export default function MovieSearch() {
 
     useEffect(() => {
         setLoading(true);
-        (async () => {
-            const url = `${searchUrl}?api_key=${key}&query=${input}&page=${page}`;
-        const data = await searchFunction(url);
-        setResults(data);
-        setLoading(false);
-    })();
+        if(movie) {
+            (async () => {
+                const url = `${searchUrl}?api_key=${key}&query=${movie}&page=${page}`;
+            const data = await searchFunction(url);
+            setResults(data);
+            setLoading(false);
+        })();
+        }
 
-    }, [input, page])
+    }, [movie, page])
 
     return (
         <>

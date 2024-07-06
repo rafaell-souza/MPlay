@@ -42,6 +42,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                                 key={movie.id}
                                 id={movie.id}
                                 poster_path={movie.poster_path}
+                                title={movie.title}
                             />
                         )
                     })}
@@ -54,6 +55,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             key={movie.id}
                             id={movie.id}
                             poster_path={movie.poster_path}
+                            title={movie.title}
                         />
                     ))}
                 </div>
@@ -65,6 +67,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             key={movie.id}
                             id={movie.id}
                             poster_path={movie.poster_path}
+                            title={movie.title}
                         />
                     ))}
                 </div>
@@ -76,6 +79,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             key={movie.id}
                             id={movie.id}
                             poster_path={movie.poster_path}
+                            title={movie.title}
                         />
                     ))}
                 </div>

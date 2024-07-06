@@ -1,6 +1,6 @@
 import Details from "./details";
-import { useState, useEffect, useContext } from "react";
-import { MovieContext } from "../Context/MovieContext";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -19,22 +19,23 @@ type MovieType = {
 
 export default function MovieDetails() {
     const [movieDetails, setMovieDetails] = useState<MovieType | null>(null);
+    const { id } = useParams<{ id: string }>();
 
-    const { movieId } = useContext(MovieContext);
-
-    async function FetchmovieDetails(id: number): Promise<MovieType>{
+    async function FetchmovieDetails(id: string): Promise<MovieType>{
     const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`);
         const data = await response.json();
         return data;
     }
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await FetchmovieDetails(movieId);
-            setMovieDetails(data);
+        if(id) {
+            async function fetchData() {
+                const data = await FetchmovieDetails(String(id));
+                setMovieDetails(data);
+            }
+            fetchData();
         }
-        fetchData();
-    }, [movieId]);
+    }, [id]);
 
     return <Details data={movieDetails} />
 }

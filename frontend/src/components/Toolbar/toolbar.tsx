@@ -1,15 +1,10 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useContext } from "react";
-import { InputContext } from "../Context/InputContext";
+import { Link } from "react-router-dom";
 
 export default function Toolbar() {
 
     const [inputValue, setInputValue] = useState<string>("");
-
-    const { handleInput } = useContext(InputContext);
-    const navigate = useNavigate();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,9 +12,7 @@ export default function Toolbar() {
         if(inputValue.length === 0) {
             return;
         }
-
-        navigate("/search", {replace: true})
-        handleInput(inputValue)
+        window.location.href = `/search/${inputValue}`
         setInputValue("")
     }
 
@@ -35,9 +28,11 @@ export default function Toolbar() {
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="search movie..." />
 
+                <div>
                 <button className="bg-zinc-900 rounded-full p-1 outline outline-zinc-900 hover:opacity-70">
                 <IoSearchOutline className="text-xl text-zinc-200" />
                 </button>
+                </div>
             </form>
         </section>
     )

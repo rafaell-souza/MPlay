@@ -7,8 +7,8 @@ export default function AppRoutes() {
     return (
             <Routes>
                 <Route path="/" element={<MovieHome />} />
-                <Route path="/search" element={<MovieSearch />} />
-                <Route path="/details" element={<MovieDetails />} />
+                <Route path="/search/:movie" element={<MovieSearch />} />
+                <Route path="/details/:id" element={<MovieDetails />} />
             </Routes>
     )
 }
