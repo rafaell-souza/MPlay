@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import SmallCard from "../Cards/small";
+import ReviewCard from "../Cards/review";
 
 type MovieType = {
     id: number
@@ -21,13 +22,17 @@ type MovieType2 = {
     title: string;
 }[]
 
-export default function Details({ data, data2}: {data: MovieType | null, data2: MovieType2 | null}) {
+type ReviewType = {
+    author: string;
+    author_details: {avatar_path: string, username: string};
+    content: string;
+}
+
+export default function Details({ data, data2, data3}: {data: MovieType | null, data2: MovieType2 | null, data3: ReviewType[] | null}) {
     const baseImageUrl = "https://image.tmdb.org/t/p/original";
 
     const hours = data && Math.floor(data?.runtime / 60);
     const minutes = data && data?.runtime % 60;
-
-    console.log(data2);
 
     return (
         <motion.div
@@ -91,8 +96,8 @@ export default function Details({ data, data2}: {data: MovieType | null, data2: 
                 <h1 className="font-bold text-2xl mt-5">Overview</h1>
                 <p>{data?.overview}</p>
 
-                <h1 className="font-bold text-2xl mt-5">Similar Movies</h1>
-                <div className="flex overflow-x-auto scrollable-scrollbar">
+                <h2 className="font-bold text-2xl mt-5">Recomended for you</h2>
+                <div className="grid grid-cols-5 gap-y-1 scrollable-scrollbar">
                     {
                         data2 && data2.length >0 && (
                            data2.map((movie)=> {
@@ -103,6 +108,23 @@ export default function Details({ data, data2}: {data: MovieType | null, data2: 
                             key={movie.id}
                             />
                            })
+                        )
+                    }
+                </div>
+
+                <h3 className="font-bold text-2xl mt-5">Reviews</h3>
+                <div>
+                    {
+                        data3 && data3.length > 0 && (
+                            data3.map((review) => {
+                                return <ReviewCard
+                                author={review.author}
+                                avatar={review.author_details.avatar_path}
+                                username={review.author_details.username}
+                                content={review.content}
+                                key={review.author}
+                                />
+                            })
                         )
                     }
                 </div>
