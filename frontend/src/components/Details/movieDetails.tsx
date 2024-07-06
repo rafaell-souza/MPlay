@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
 type MovieType = {
+    id: number
     poster_path: string;
-    genres: number[];
+    genres: { id: number, name: string }[];
     vote_average: number;
     title: string;
     original_language: string;
@@ -17,12 +18,20 @@ type MovieType = {
     runtime: number;
 }
 
+type MovieType2 = {
+    id: number;
+    poster_path: string;
+    title: string;
+}[]
+
 export default function MovieDetails() {
     const [movieDetails, setMovieDetails] = useState<MovieType | null>(null);
+    const [recommendations, setRecommendations] = useState<MovieType2 | null>(null);
+
     const { id } = useParams<{ id: string }>();
 
-    async function FetchmovieDetails(id: string): Promise<MovieType>{
-    const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`);
+    async function FetchmovieDetails(url: string) {
+    const response = await fetch(url);
         const data = await response.json();
         return data;
     }
@@ -30,12 +39,19 @@ export default function MovieDetails() {
     useEffect(() => {
         if(id) {
             async function fetchData() {
-                const data = await FetchmovieDetails(String(id));
+                const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`
+                const url2 = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${key}`
+
+                const data = await FetchmovieDetails(url);
+                const recommendations = await FetchmovieDetails(url2);
+
                 setMovieDetails(data);
+                setRecommendations(recommendations.results);
             }
+
             fetchData();
         }
     }, [id]);
 
-    return <Details data={movieDetails} />
+    return <Details data={movieDetails} data2={recommendations} />;
 }
