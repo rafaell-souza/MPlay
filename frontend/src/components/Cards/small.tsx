@@ -21,7 +21,7 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
 
     return (
        <Link to={`/details/${id}?movie=${newTitle}`}
-       className="h-40 w-28 flex shrink-0 hover:opacity-60 mr-[1px] transition-opacity duration-100 ease-in-out"
+       className="h-40 w-[120px] flex shrink-0 hover:opacity-60 mr-[3px] transition-opacity duration-100 ease-in-out"
         >
         {
             !imageLoaded && (

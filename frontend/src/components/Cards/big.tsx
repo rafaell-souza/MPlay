@@ -20,7 +20,7 @@ export default function BigCard({ title, image, id }: BigCardProps) {
 
     return (
         <Link to={`/details/${id}?movie=${newTitle}`}
-        className="w-full h-[342px] flex shrink-0 flex flex-col relative justify-end p-5">
+        className="w-full h-[360px] flex shrink-0 flex flex-col relative justify-end p-5">
             {!imageLoaded && (
                 <div className="w-full h-full flex items-center justify-center absolute inset-0 ">
                     <AiOutlineLoading3Quarters className="text-white text-4xl animate-spin" />

@@ -17,15 +17,15 @@ body {
 }
 
 body::-webkit-scrollbar {
-    width: 5px;
+    width: 3px;
     background: rgb(0, 0, 0);
 }
 
 body::-webkit-scrollbar-thumb {
-    background: rgb(45, 45, 45);
+    background: rgb(47, 37, 0);
 }
 
 .scrollable-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(20, 20, 20) rgb(6, 6, 6);
+    scrollbar-width: none;
+    scrollbar-color: rgb(63, 33, 1) rgb(6, 6, 6);
 }
