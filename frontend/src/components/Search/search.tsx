@@ -44,7 +44,7 @@ export default function Search({ data, loading, changePage }: { data: Movie | nu
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <section className="relative top-12 left-[225px] text-white w-[670px] ">
+            <section className="relative top-12 left-[225px] text-white w-[670px]">
 
                 <div className="grid grid-cols-5">
                     {loading ? (

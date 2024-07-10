@@ -28,3 +28,8 @@ body::-webkit-scrollbar-thumb {
     scrollbar-width: none;
     scrollbar-color: rgb(63, 33, 1) rgb(6, 6, 6);
 }
+
+.scroll-genre {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(63, 33, 1) rgb(6, 6, 6);
+}
