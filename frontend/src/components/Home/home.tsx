@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import BigCard from "../Cards/big";
 import SmallCard from "../Cards/small";
-import Footer from "../Footer/footer";
+import { motion } from 'framer-motion';
 
 type MovieType = {
     title: string;
@@ -58,12 +58,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 <header>
                     <h1 className="text-xl mt-10 text-white font-bold">PLAYING NOW</h1>
                 </header>
-                <div className="flex justify-between h-40 items-center">
+                <div className="flex justify-between items-center h-[200px] relative">
+                    <motion.div
+                    className="absolute left-0 z-20"
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-615, scrollPlaying)}
-                        className="text-white text-4xl h-[165px] w-20 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(-740, scrollPlaying)}
+                        className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
-                    <div className="overflow-x-auto flex scrollable-scrollbar" ref={scrollPlaying}>
+                    </motion.div>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollPlaying}>
                         {playingList.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -73,10 +78,14 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             />
                         ))}
                     </div>
+                    <motion.div className="absolute right-0" 
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropright
-                        onClick={() => scroll(615, scrollPlaying)}
-                        className="text-white text-4xl h-[165px] w-20 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(740, scrollPlaying)}
+                        className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
+                    </motion.div>
                 </div>
             </section>
 
@@ -84,12 +93,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 <header>
                     <h1 className="text-xl mt-10 text-white font-bold">TOP RATED</h1>
                 </header>
-                <div className="flex justify-between h-40 items-center">
+                <div className="flex justify-between items-center h-[200px] relative">
+                <motion.div
+                    className="absolute left-0 z-20"
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-615, scrollMostRated)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(-740, scrollMostRated)}
+                        className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
-                    <div className="overflow-x-auto flex scrollable-scrollbar" ref={scrollMostRated}>
+                    </motion.div>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollMostRated}>
                         {mostRated.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -99,10 +113,14 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             />
                         ))}
                     </div>
+                    <motion.div className="absolute right-0" 
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropright
-                        onClick={() => scroll(615, scrollMostRated)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(740, scrollMostRated)}
+                        className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
+                    </motion.div>
                 </div>
             </section>
 
@@ -110,12 +128,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 <header>
                     <h1 className="text-xl mt-10 text-white font-bold">POPULAR</h1>
                 </header>
-                <div className="flex justify-between h-40 items-center">
+                <div className="flex justify-between items-center h-[200px] relative">
+                <motion.div
+                    className="absolute left-0 z-20"
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-615, scrollPopular)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(-740, scrollPopular)}
+                        className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
-                    <div className="overflow-x-auto flex scrollable-scrollbar" ref={scrollPopular}>
+                    </motion.div>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollPopular}>
                         {popular.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -125,10 +148,14 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             />
                         ))}
                     </div>
+                    <motion.div className="absolute right-0" 
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropright
-                        onClick={() => scroll(615, scrollPopular)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(740, scrollPopular)}
+                        className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
+                    </motion.div>
                 </div>
             </section>
 
@@ -136,12 +163,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 <header>
                     <h1 className="text-xl mt-10 text-white font-bold">UPCOMING</h1>
                 </header>
-                <div className="flex justify-between h-40 items-center">
+                <div className="flex justify-between items-center h-[200px] relative">
+                <motion.div
+                    className="absolute left-0 z-20"
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-615, scrollUpcoming)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(-740, scrollUpcoming)}
+                        className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
-                    <div className="overflow-x-auto flex scrollable-scrollbar" ref={scrollUpcoming}>
+                    </motion.div>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollUpcoming}>
                         {upcoming.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -151,13 +183,16 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             />
                         ))}
                     </div>
+                    <motion.div className="absolute right-0" 
+                    whileTap={{ scale: 1.1 }}
+                    >
                     <IoMdArrowDropright
-                        onClick={() => scroll(615, scrollUpcoming)}
-                        className="text-white text-4xl h-[165px] w-28 rounded bg-zinc-900 cursor-pointer"
+                        onClick={() => scroll(740, scrollUpcoming)}
+                        className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
+                    </motion.div>
                 </div>
             </section>
-            <Footer />
         </section>
 
     );

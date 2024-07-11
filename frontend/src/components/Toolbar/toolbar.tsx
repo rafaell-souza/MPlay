@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
+import { SiThemoviedatabase } from "react-icons/si";
 
 const key = import.meta.env.VITE_TMDB_KEY;
 
@@ -84,13 +85,13 @@ export default function Toolbar() {
                     {isVisible && (
                             <motion.div 
                         initial={{ height: 0 }}
-                        animate={{ height: 184 }}
+                        animate={{ height: 150 }}
                         exit={{ height: 0 }}
                         transition={{ duration: 0.1, ease: "easeInOut" }}
                         className="w-full flex flex-col  overflow-y-auto scroll-genre rounded bg-zinc-950">
                             <ul className="w-full">
                                 {movieGenres.map((genre) => (
-                                    <Link to={`/genre/${genre.id}`} key={genre.id}>
+                                    <Link to={`/genre/${genre.id}?name=${genre.name}`} key={genre.id}>
                                         <li
                                             className="px-2 py-[3px] rounded mt-1 bg-zinc-900 cursor-pointer hover:bg-yellow-700 text-sm text-center"
                                             onClick={() => handleSelect(genre.name)}
@@ -103,6 +104,13 @@ export default function Toolbar() {
                         </motion.div>
                     )}
                      </AnimatePresence>
+                </div>
+                
+                <div className="flex items-center px-1 mx-2 rounded mt-5 py-1 bg-zinc-900">
+                    <a>
+                        <SiThemoviedatabase className="text-5xl text-blue-500" />
+                    </a>
+                    <p className="text-white text-xs leading-none mx-2">this product uses the TMDb API but is not endorsed or certified by TMDb.</p>
                 </div>
 
             </nav>

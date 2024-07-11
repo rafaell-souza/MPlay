@@ -33,3 +33,9 @@ body::-webkit-scrollbar-thumb {
     scrollbar-width: thin;
     scrollbar-color: rgb(63, 33, 1) rgb(6, 6, 6);
 }
+
+.card-color {
+    background-image: linear-gradient(
+        to bottom, transparent 50%, black 100%
+    );
+}

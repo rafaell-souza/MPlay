@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import SmallCard from "../Cards/small";
 import ReviewCard from "../Cards/review";
-import Footer from "../Footer/footer";
 
 type MovieType = {
     id: number
@@ -129,7 +128,6 @@ export default function Details({ data, data2, data3}: {data: MovieType | null, 
                         )
                     }
                 </div>
-                <Footer />
         </section>
         </motion.div>
     )

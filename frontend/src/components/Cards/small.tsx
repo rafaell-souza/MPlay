@@ -1,6 +1,7 @@
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 type CardProps = {
     id: number;
@@ -20,8 +21,12 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
     const newTitle = title.replace(/ /g, '-')
 
     return (
-       <Link to={`/details/${id}?movie=${newTitle}`}
-       className="h-40 w-[120px] flex shrink-0 hover:opacity-60 mr-[3px] transition-opacity duration-200 ease-in-out"
+      <motion.div
+      whileHover={{ scale: 1.06 }}
+      transition={{ duration: 0.1 }}
+      > 
+         <Link to={`/details/${id}?movie=${newTitle}`}
+       className="h-44 w-[130px] flex shrink-0 mr-[6px] flex items-end text-white text-xs rounded-lg relative border border-[#2f2f2f]"
         >
         {
             !imageLoaded && (
@@ -32,9 +37,13 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
                 <img
                     src={tmdbImageUrl + poster_path}
                     alt="poster"
-                    className={`w-full h-full object-cover object-center ${imageLoaded ? 'visible' : 'hidden'}`}
+                    className={`w-full h-full absolute object-center object-cover ${imageLoaded ? 'visible' : 'hidden'} rounded-lg`}
                     onLoad={handleImageLoaded}
                 />
+                <p className='z-10 mb-1 text-[10px] font-bold mx-auto'>{title.length > 15 ? title.slice(0, 15).toUpperCase()+"..." : title.toUpperCase()}
+                </p>
+                <div className='absolute h-full w-full card-color rounded-lg'></div>
         </Link>
+      </motion.div>
     )
 }
