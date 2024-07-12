@@ -42,6 +42,12 @@ body::-webkit-scrollbar-thumb {
 
 .bigcard-color {
     background-image: linear-gradient(
-        to left, transparent 40%, black 80%
+        to left, transparent 40%, black 90%
+    );
+}
+
+.bigcard-color2 {
+    background-image: linear-gradient(
+        to bottom, transparent 80%, black 99%
     );
 }

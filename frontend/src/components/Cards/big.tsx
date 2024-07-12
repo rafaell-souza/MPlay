@@ -6,11 +6,10 @@ type BigCardProps = {
     title: string;
     image: string;
     id: number;
-    onClick: () => void;
-    ref: any;
+    onClick?: () => void;
 }
 
-export default function BigCard({ title, image, id, onClick, ref }: BigCardProps) {
+export default function BigCard({ title, image, id, onClick }: BigCardProps) {
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original";
     const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -22,7 +21,6 @@ export default function BigCard({ title, image, id, onClick, ref }: BigCardProps
 
     return (
         <div
-        ref={ref}
         className="relative w-full h-[360px] flex shrink-0 flex flex-col relative justify-end p-5 cursor-grab" 
         onClick={onClick}>
             {!imageLoaded && (
@@ -38,6 +36,7 @@ export default function BigCard({ title, image, id, onClick, ref }: BigCardProps
                 onLoad={handleImageLoaded}
             />
             <div className='inset-0 absolute w-full h-full bigcard-color'></div>
+            <div className='inset-0 absolute w-full h-full bigcard-color2'></div>
 
             <h1 className="text-white text-3xl font-bold mb-2 relative z-20">{title}</h1>
             

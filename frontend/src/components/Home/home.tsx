@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import BigCard from "../Cards/big";
 import SmallCard from "../Cards/small";
@@ -21,43 +21,80 @@ type HomeProps = {
 };
 
 export default function Home({ playing, mostRated, popular, upcoming }: HomeProps) {
-    const topPlaying = playing.slice(0, 5);
-    const playingList = playing.slice(5, 20);
+    const topPlaying = playing.slice(0, 10);
+
+    const [userChoice, setUserChoice] = useState<boolean>(false);
+    const [count, setCount] = useState<number>(0);
 
     const scrollPlaying = useRef<HTMLDivElement>(null);
     const scrollMostRated = useRef<HTMLDivElement>(null);
     const scrollPopular = useRef<HTMLDivElement>(null);
     const scrollUpcoming = useRef<HTMLDivElement>(null);
 
+    const scrollBigCard = useRef<(HTMLDivElement | null)[]>([]);
+
     const scroll = (value: number, ref: React.RefObject<HTMLDivElement>) => {
         ref.current && ref.current.scrollBy({ left: value });
     };
+
+    function scrollBigCards (value: number) {
+        if (scrollBigCard.current[value]) {
+            scrollBigCard.current[value].scrollIntoView({ block: 'nearest'})
+        }
+    }
+    
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout;
+        if (!userChoice) {
+            const maxCount = scrollBigCard.current.length;
+
+            intervalId = setInterval(() => {
+                if (count < maxCount) {
+                    scrollBigCards(count);
+                    setCount((prev) => (prev + 1) % maxCount);
+                }
+            }, 4000);
+        }
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [userChoice, count]);
 
     return (
         <section className="relative top-10 w-[666px] left-[234px] flex flex-col bg-black">
             <section className="relative">
                 <div className="absolute z-30 right-5 top-[30%] flex flex-col">
                     {
-                        topPlaying.map((movie,index) => {
+                        topPlaying.map((movie, index) => {
                             return (
                                 <input 
                                 type="radio" 
                                 key={movie.id} 
                                 className="mt-2"
+                                name="movie"
+                                onChange={() => scrollBigCards(index)}
+                                onClick={() => setUserChoice(true)}
+                                checked={count === index}
                                 />
                             )
-                        })
+                        })  
                     }
                 </div>
                 <motion.div 
                 className="flex overflow-x-auto scrollable-scrollbar">
-                    {topPlaying.map((movie) => (
-                        <BigCard
-                            key={movie.id}
+                    {topPlaying.map((movie, index) => (
+                        <motion.div 
+                        className="w-full shrink-0" 
+                        ref={(el) => (scrollBigCard.current[index] = el)} 
+                        key={index}
+                        >
+                            <BigCard
                             title={movie.title}
                             image={movie?.backdrop_path}
                             id={movie.id}
                         />
+                        </motion.div>
                     ))}
                 </motion.div>
             </section>
@@ -82,7 +119,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 />
                 </motion.div>
                 <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollPlaying}>
-                    {playingList.map((movie) => (
+                    {playing.map((movie) => (
                         <SmallCard
                             key={movie.id}
                             id={movie.id}
