@@ -7,9 +7,10 @@ type BigCardProps = {
     image: string;
     id: number;
     onClick: () => void;
+    ref: any;
 }
 
-export default function BigCard({ title, image, id, onClick }: BigCardProps) {
+export default function BigCard({ title, image, id, onClick, ref }: BigCardProps) {
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original";
     const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -21,7 +22,9 @@ export default function BigCard({ title, image, id, onClick }: BigCardProps) {
 
     return (
         <div
-        className="w-full h-[360px] flex shrink-0 flex flex-col relative justify-end p-5 cursor-grab" onClick={onClick}>
+        ref={ref}
+        className="relative w-full h-[360px] flex shrink-0 flex flex-col relative justify-end p-5 cursor-grab" 
+        onClick={onClick}>
             {!imageLoaded && (
                 <div className="w-full h-full flex items-center justify-center absolute inset-0 ">
                     <AiOutlineLoading3Quarters className="text-white text-4xl animate-spin" />
@@ -34,6 +37,7 @@ export default function BigCard({ title, image, id, onClick }: BigCardProps) {
                 className={`w-full h-full object-cover object-center absolute inset-0 ${imageLoaded ? 'visible' : 'hidden'}`}
                 onLoad={handleImageLoaded}
             />
+            <div className='inset-0 absolute w-full h-full bigcard-color'></div>
 
             <h1 className="text-white text-3xl font-bold mb-2 relative z-20">{title}</h1>
             

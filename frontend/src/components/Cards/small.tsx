@@ -26,7 +26,7 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
       transition={{ duration: 0.1 }}
       > 
          <Link to={`/details/${id}?movie=${newTitle}`}
-       className="h-44 w-[130px] flex shrink-0 mr-[6px] flex items-end text-white text-xs rounded-lg relative border border-[#2f2f2f]"
+       className="h-44 w-[128px] flex shrink-0 mr-[6px] flex items-end text-white text-xs relative border border-[#2f2f2f]"
         >
         {
             !imageLoaded && (
@@ -37,12 +37,19 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
                 <img
                     src={tmdbImageUrl + poster_path}
                     alt="poster"
-                    className={`w-full h-full absolute object-center object-cover ${imageLoaded ? 'visible' : 'hidden'} rounded-lg`}
+                    className={`w-full h-full absolute object-center object-cover ${imageLoaded ? 'visible' : 'hidden'}`}
                     onLoad={handleImageLoaded}
                 />
                 <p className='z-10 mb-1 text-[10px] font-bold mx-auto'>{title.length > 15 ? title.slice(0, 15).toUpperCase()+"..." : title.toUpperCase()}
                 </p>
-                <div className='absolute h-full w-full card-color rounded-lg'></div>
+                <div className='absolute h-full w-full card-color'></div>
+                <motion.div 
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 0.07 }}
+                transition={{ duration: 0.2 }}
+                className='absolute h-full 
+                w-full bg-white'>
+                </motion.div>
         </Link>
       </motion.div>
     )
