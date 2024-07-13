@@ -26,7 +26,7 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
       transition={{ duration: 0.1 }}
       > 
          <Link to={`/details/${id}?movie=${newTitle}`}
-       className="h-44 w-[128px] flex shrink-0 mr-[6px] flex items-end text-white text-xs relative border border-[#2f2f2f]"
+       className="h-44 w-[128px] flex shrink-0 mr-[6px] flex items-end text-white text-xs relative"
         >
         {
             !imageLoaded && (

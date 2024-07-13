@@ -10,7 +10,7 @@ const Header = () => {
 
     return (
         <header 
-        className="border border-zinc-700 w-full h-10 flex justify-between px-6 items-center fixed z-30  bg-zinc-900">
+        className="border border-zinc-700 w-full h-10 flex justify-between px-6 items-center fixed z-50  bg-zinc-900">
             <h1 onClick={handleReturnhome} className="text-3xl text-white font-bold hover:opacity-90">MO</h1>
 
             <div className="text-white text-[12px] w-44 justify-between flex">

@@ -12,7 +12,6 @@ type MovieType = {
     id: number;
 };
 
-
 type HomeProps = {
     playing: MovieType[];
     mostRated: MovieType[];
@@ -23,35 +22,36 @@ type HomeProps = {
 export default function Home({ playing, mostRated, popular, upcoming }: HomeProps) {
     const topPlaying = playing.slice(0, 10);
 
-    const [userChoice, setUserChoice] = useState<boolean>(false);
-    const [count, setCount] = useState<number>(0);
+    const [isUserInteraction, setIsUserInteraction] = useState<boolean>(false);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-    const scrollPlaying = useRef<HTMLDivElement>(null);
-    const scrollMostRated = useRef<HTMLDivElement>(null);
-    const scrollPopular = useRef<HTMLDivElement>(null);
-    const scrollUpcoming = useRef<HTMLDivElement>(null);
+    const playingRef = useRef<HTMLDivElement>(null);
+    const mostRatedRef = useRef<HTMLDivElement>(null);
+    const popularRef = useRef<HTMLDivElement>(null);
+    const upcomingRef = useRef<HTMLDivElement>(null);
 
-    const scrollBigCard = useRef<(HTMLDivElement | null)[]>([]);
+    const autoScrollRef = useRef<HTMLDivElement>(null);
+    const bigCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const scroll = (value: number, ref: React.RefObject<HTMLDivElement>) => {
+    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>) => {
         ref.current && ref.current.scrollBy({ left: value });
     };
 
-    function scrollBigCards (value: number) {
-        if (scrollBigCard.current[value]) {
-            scrollBigCard.current[value].scrollIntoView({ block: 'nearest'})
+    function handleBigCardScroll(index: number) {
+        if (bigCardRefs.current[index]) {
+            bigCardRefs.current[index].scrollIntoView({ block: "nearest", inline: "start" });
         }
     }
-    
+
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
-        if (!userChoice) {
-            const maxCount = scrollBigCard.current.length;
+        if (!isUserInteraction) {
+            const maxIndex = bigCardRefs.current.length;
 
             intervalId = setInterval(() => {
-                if (count < maxCount) {
-                    scrollBigCards(count);
-                    setCount((prev) => (prev + 1) % maxCount);
+                if (currentIndex < maxIndex) {
+                    handleScroll(666, autoScrollRef);
+                    setCurrentIndex((prev) => prev + 1);
                 }
             }, 4000);
         }
@@ -59,34 +59,37 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
         return () => {
             clearInterval(intervalId);
         };
-    }, [userChoice, count]);
+    }, [currentIndex, isUserInteraction]);
 
     return (
         <section className="relative top-10 w-[666px] left-[234px] flex flex-col bg-black">
+
             <section className="relative">
-                <div className="absolute z-30 right-5 top-[30%] flex flex-col">
+                <div className="absolute z-30 right-5 top-[15%] flex flex-col">
                     {
                         topPlaying.map((movie, index) => {
+                            
                             return (
                                 <input 
                                 type="radio" 
                                 key={movie.id} 
                                 className="mt-2"
                                 name="movie"
-                                onChange={() => scrollBigCards(index)}
-                                onClick={() => setUserChoice(true)}
-                                checked={count === index}
+                                onChange={() => handleBigCardScroll(index)}
+                                onClick={() => { setIsUserInteraction(true); setCurrentIndex(index) }}
+                                checked={currentIndex === index}
                                 />
                             )
-                        })  
-                    }
+                        })      
+                    }       
                 </div>
+
                 <motion.div 
-                className="flex overflow-x-auto scrollable-scrollbar">
+                className="flex overflow-x-auto scrollable-scrollbar" ref={autoScrollRef}>
                     {topPlaying.map((movie, index) => (
-                        <motion.div 
+                        <motion.div  
                         className="w-full shrink-0" 
-                        ref={(el) => (scrollBigCard.current[index] = el)} 
+                        ref={(el) => (bigCardRefs.current[index] = el)} 
                         key={index}
                         >
                             <BigCard
@@ -114,11 +117,11 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 whileTap={{ scale: 1.1 }}
                 >
                 <IoMdArrowDropleft
-                    onClick={() => scroll(-740, scrollPlaying)}
+                    onClick={() => handleScroll(-740, playingRef)}
                     className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                 />
                 </motion.div>
-                <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollPlaying}>
+                <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={playingRef}>
                     {playing.map((movie) => (
                         <SmallCard
                             key={movie.id}
@@ -132,7 +135,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 whileTap={{ scale: 1.1 }}
                 >
                 <IoMdArrowDropright
-                    onClick={() => scroll(740, scrollPlaying)}
+                    onClick={() => handleScroll(740, playingRef)}
                     className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                 />
                 </motion.div>
@@ -155,11 +158,11 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-600, scrollMostRated)}
+                        onClick={() => handleScroll(-600, mostRatedRef)}
                         className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
                     </motion.div>
-                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollMostRated}>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={mostRatedRef}>
                         {mostRated.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -173,7 +176,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropright
-                        onClick={() => scroll(600, scrollMostRated)}
+                        onClick={() => handleScroll(600, mostRatedRef)}
                         className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
                     </motion.div>
@@ -196,11 +199,11 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-740, scrollPopular)}
+                        onClick={() => handleScroll(-740, popularRef)}
                         className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
                     </motion.div>
-                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollPopular}>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={popularRef}>
                         {popular.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -214,7 +217,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropright
-                        onClick={() => scroll(740, scrollPopular)}
+                        onClick={() => handleScroll(740, popularRef)}
                         className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
                     </motion.div>
@@ -237,11 +240,11 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropleft
-                        onClick={() => scroll(-740, scrollUpcoming)}
+                        onClick={() => handleScroll(-740, upcomingRef)}
                         className="text-white text-4xl h-12 w-7 cursor-pointer bg-red-700 rounded-e"
                     />
                     </motion.div>
-                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={scrollUpcoming}>
+                    <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={upcomingRef}>
                         {upcoming.map((movie) => (
                             <SmallCard
                                 key={movie.id}
@@ -255,7 +258,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     whileTap={{ scale: 1.1 }}
                     >
                     <IoMdArrowDropright
-                        onClick={() => scroll(740, scrollUpcoming)}
+                        onClick={() => handleScroll(740, upcomingRef)}
                         className="text-white text-4xl w-7 h-12 rounded-s cursor-pointer bg-red-700"
                     />
                     </motion.div>
