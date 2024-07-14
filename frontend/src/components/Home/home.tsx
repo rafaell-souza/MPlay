@@ -51,18 +51,22 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
             const maxIndex = bigCardRefs.current.length;
 
             intervalId = setInterval(() => {
-                if (currentIndex < maxIndex) {
+                if (currentIndex === 0 || currentIndex < maxIndex) {
                     handleScroll(666, autoScrollRef);
                     setCurrentIndex((prev) => prev + 1);
                 }
-             
+                else {
+                    setCurrentIndex(0);
+                }
             }, 5000);
         }
-
         return () => {
             clearInterval(intervalId);
         };
     }, [currentIndex, isUserInteraction]);
+
+    console.log("currentIndex", currentIndex);
+    console.log(isUserInteraction)
 
     return (
         <section className="relative top-10 w-[666px] left-[234px] flex flex-col bg-black">
