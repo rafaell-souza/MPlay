@@ -10,6 +10,8 @@ type MovieType = {
     poster_path: string;
     backdrop_path: string;
     id: number;
+    release_date: string;
+    vote_average: number;
 };
 
 type HomeProps = {
@@ -53,7 +55,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     handleScroll(666, autoScrollRef);
                     setCurrentIndex((prev) => prev + 1);
                 }
-            }, 4000);
+             
+            }, 5000);
         }
 
         return () => {
@@ -65,15 +68,14 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
         <section className="relative top-10 w-[666px] left-[234px] flex flex-col bg-black">
 
             <section className="relative">
-                <div className="absolute z-30 right-5 top-[15%] flex flex-col">
+                <div className=" z-30 flex absolute bottom-0 left-[80%] transform -translate-x-2/4">
                     {
                         topPlaying.map((movie, index) => {
-                            
                             return (
                                 <input 
                                 type="radio" 
                                 key={movie.id} 
-                                className="mt-2"
+                                className="mr-1 cursor-pointer bg-yellow-700"
                                 name="movie"
                                 onChange={() => handleBigCardScroll(index)}
                                 onClick={() => { setIsUserInteraction(true); setCurrentIndex(index) }}
@@ -85,7 +87,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                 </div>
 
                 <motion.div 
-                className="flex overflow-x-auto scrollable-scrollbar" ref={autoScrollRef}>
+                className="flex overflow-x-auto scrollable-scrollbar" 
+                ref={autoScrollRef}>
                     {topPlaying.map((movie, index) => (
                         <motion.div  
                         className="w-full shrink-0" 
@@ -95,6 +98,9 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             <BigCard
                             title={movie.title}
                             image={movie?.backdrop_path}
+                            overview={movie.overview}
+                            release_date={movie.release_date}
+                            vote_average={movie.vote_average}
                             id={movie.id}
                         />
                         </motion.div>

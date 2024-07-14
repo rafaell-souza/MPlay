@@ -14,6 +14,8 @@ type MovieType = {
     poster_path: string;
     backdrop_path: string;
     id: number;
+    release_date: string;
+    vote_average: number;
 };
 
 export default function MovieHome() {
@@ -27,6 +29,8 @@ export default function MovieHome() {
         const data = await response.json();
         return data.results;
     }
+
+    console.log(moviesPlaying);
 
     useEffect(() => {
         async function SearchMovies() {
