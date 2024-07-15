@@ -22,10 +22,10 @@ type HomeProps = {
 };
 
 export default function Home({ playing, mostRated, popular, upcoming }: HomeProps) {
-    const topPlaying = playing.slice(0, 10);
 
     const [isUserInteraction, setIsUserInteraction] = useState<boolean>(false);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [infinitePlaying, setInfinitePlaying] = useState<MovieType[]>([]);
 
     const playingRef = useRef<HTMLDivElement>(null);
     const mostRatedRef = useRef<HTMLDivElement>(null);
@@ -35,8 +35,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
     const autoScrollRef = useRef<HTMLDivElement>(null);
     const bigCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>) => {
-        ref.current && ref.current.scrollBy({ left: value });
+    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>, type?: ScrollBehavior) => {
+        ref.current && ref.current.scrollBy({ left: value, behavior: type || "smooth" });
     };
 
     function handleBigCardScroll(index: number) {
@@ -46,27 +46,29 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
     }
 
     useEffect(() => {
-        let intervalId: NodeJS.Timeout;
-        if (!isUserInteraction) {
-            const maxIndex = bigCardRefs.current.length;
+        setInfinitePlaying([...playing.slice(0, 10), ...(playing.length > 0 ? [playing[0]] : [])]);
+    }, [playing]);
 
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout;
+
+        if (!isUserInteraction) {
             intervalId = setInterval(() => {
-                if (currentIndex === 0 || currentIndex < maxIndex) {
+                if (currentIndex === 0 || currentIndex < bigCardRefs.current.length) {
                     handleScroll(666, autoScrollRef);
-                    setCurrentIndex((prev) => prev + 1);
+                        setCurrentIndex((prev) => prev + 1);
                 }
                 else {
+                    handleScroll(-666 * 10, autoScrollRef, "instant");
                     setCurrentIndex(0);
                 }
-            }, 5000);
+            }, 6000);
         }
+
         return () => {
             clearInterval(intervalId);
         };
     }, [currentIndex, isUserInteraction]);
-
-    console.log("currentIndex", currentIndex);
-    console.log(isUserInteraction)
 
     return (
         <section className="relative top-10 w-[666px] left-[234px] flex flex-col bg-black">
@@ -74,7 +76,8 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
             <section className="relative">
                 <div className=" z-30 flex absolute bottom-0 left-[80%] transform -translate-x-2/4">
                     {
-                        topPlaying.map((movie, index) => {
+                        infinitePlaying.slice(0,10).map((movie, index) => {
+                            const isChecked = currentIndex >= 10? 0 :  currentIndex;
                             return (
                                 <input 
                                 type="radio" 
@@ -83,18 +86,18 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                                 name="movie"
                                 onChange={() => handleBigCardScroll(index)}
                                 onClick={() => { setIsUserInteraction(true); setCurrentIndex(index) }}
-                                checked={currentIndex === index}
+                                checked={index === isChecked}
                                 />
                             )
                         })      
                     }       
                 </div>
 
-                <motion.div 
+                <div 
                 className="flex overflow-x-auto scrollable-scrollbar" 
                 ref={autoScrollRef}>
-                    {topPlaying.map((movie, index) => (
-                        <motion.div  
+                    {infinitePlaying.map((movie, index) => (
+                        <div  
                         className="w-full shrink-0" 
                         ref={(el) => (bigCardRefs.current[index] = el)} 
                         key={index}
@@ -107,9 +110,9 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             vote_average={movie.vote_average}
                             id={movie.id}
                         />
-                        </motion.div>
+                        </div>
                     ))}
-                </motion.div>
+                </div>
             </section>
 
             <motion.div

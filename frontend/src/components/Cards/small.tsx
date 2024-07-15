@@ -22,7 +22,7 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
 
     return (
       <motion.div
-      whileHover={{ scale: 1.06 }}
+      whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.1 }}
       > 
          <Link to={`/details/${id}?movie=${newTitle}`}
