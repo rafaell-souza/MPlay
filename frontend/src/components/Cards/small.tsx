@@ -18,15 +18,11 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
         setImageLoaded(true);
     }
 
-    const newTitle = title.replace(/ /g, '-')
+    const fixedTitle = title.replace(/ /g, '-')
 
     return (
-      <motion.div
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.1 }}
-      > 
-         <Link to={`/details/${id}?movie=${newTitle}`}
-       className="snap-center h-44 w-[128px] flex shrink-0 mr-[6px] flex items-end text-white text-xs relative"
+         <Link to={`/details/${id}?movie=${fixedTitle}`}
+       className="snap-center h-44 w-[128px] flex shrink-0 mr-[6px] justify-end mt-2 text-white relative flex-col"
         >
         {
             !imageLoaded && (
@@ -45,12 +41,11 @@ export default function SmallCard({id, poster_path, title}: CardProps) {
                 <div className='absolute h-full w-full card-color'></div>
                 <motion.div 
                 initial={{ opacity: 0 }}
-                whileHover={{ opacity: 0.07 }}
+                whileHover={{ opacity: 0.08 }}
                 transition={{ duration: 0.2 }}
                 className='absolute h-full 
                 w-full bg-white'>
                 </motion.div>
         </Link>
-      </motion.div>
     )
 }
