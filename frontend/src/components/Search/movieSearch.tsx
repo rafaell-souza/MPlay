@@ -50,7 +50,7 @@ export default function MovieSearch() {
 
     return (
         <>
-        <Search data={results} loading={loading} changePage={ChangePage}/>
+        <Search data={results} loading={loading} changePage={ChangePage} text={movie}/>
         </>
     )
 }

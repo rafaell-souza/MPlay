@@ -30,8 +30,6 @@ export default function MovieHome() {
         return data.results;
     }
 
-    console.log(moviesPlaying);
-
     useEffect(() => {
         async function SearchMovies() {
             try {
@@ -46,8 +44,6 @@ export default function MovieHome() {
 
                 const url4 = `${upcomingUrl}?api_key=${key}`;
                 const movieList4 = await fetchData(url4);
-
-             
 
                 setMoviesPlaying(movieList);
                 setMoviesTopRated(movieList2);
