@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
 import SmallCard from "../Cards/small";
 import ReviewCard from "../Cards/review";
+import { useRequest } from "../../Hooks/useRequest";
+import { useParams } from "react-router-dom";
 
-type MovieType = {
+const key: string = import.meta.env.VITE_TMDB_KEY;
+
+type Movie = {
     id: number
     poster_path: string;
     genres: { id: number, name: string }[];
@@ -14,25 +18,43 @@ type MovieType = {
     origin_country: string[];
     status: string;
     runtime: number;
+    production_countries: {name: string}[];
 }
 
-type MovieType2 = {
-    id: number;
-    poster_path: string;
-    title: string;
-}[]
-
-type ReviewType = {
+type Review = {
     author: string;
     author_details: {avatar_path: string, username: string};
     content: string;
 }
 
-export default function Details({ data, data2, data3}: {data: MovieType | null, data2: MovieType2 | null, data3: ReviewType[] | null}) {
+type ReviewType = {
+    total_pages: number;
+    total_results: number;
+    results: Review[];
+    page: number;
+}
+
+type Recommend = {
+    results: Movie[];
+    page: number
+    total_pages: number;
+    total_results: number;
+}
+
+export default function Details() {
+    const { id } = useParams<{ id: string }>();
+
+    const detailsUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
+    const recommendationsUrl = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${key}`;
+    const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${key}`;
     const baseImageUrl = "https://image.tmdb.org/t/p/original";
 
-    const hours = data && Math.floor(data?.runtime / 60);
-    const minutes = data && data?.runtime % 60;
+    const { data: details } = useRequest(detailsUrl) as { data: Movie };
+    const { data: recommendations } = useRequest(recommendationsUrl) as { data: Recommend };
+    const { data: reviews } = useRequest(reviewsUrl) as { data: ReviewType };
+
+    const hours = details && Math.floor(details?.runtime / 60);
+    const minutes = details && details?.runtime % 60;
 
     return (
         <motion.div
@@ -45,17 +67,17 @@ export default function Details({ data, data2, data3}: {data: MovieType | null, 
             <div className="flex mt-3 ">
                 <img
                     className="w-[200px] h-[260px] border rounded border-zinc-300 border-dotted"
-                    src={baseImageUrl + data?.poster_path}
-                    alt={data?.title} />
+                    src={baseImageUrl + details?.poster_path}
+                    alt={details?.title} />
 
                 <div className="px-5">
-                    <h1 className="font-bold text-2xl">{data?.title}</h1>
+                    <h1 className="font-bold text-2xl">{details?.title}</h1>
 
                     <div className="flex items-center ">
                         <span className="font-bold">Genres: </span>
                         {
-                           data && data.genres && (
-                            data?.genres.map((genre) => {
+                           details && details.genres && (
+                            details?.genres.map((genre) => {
                                 return <span key={genre.id} className="ml-2 text-xs rounded-full border px-2 border-zinc-600 hover:bg-zinc-800 py-[1px]">{genre.name}</span>
                             })
                            )
@@ -64,24 +86,24 @@ export default function Details({ data, data2, data3}: {data: MovieType | null, 
 
                         <p className="flex items-end">
                             <span className="font-bold">Rate:</span> 
-                            <span className="ml-2">{data?.vote_average.toFixed(1)}</span> 
+                            <span className="ml-2">{details?.vote_average}</span> 
                         </p>
                         <p>
                             <span className="font-bold">Language:</span> 
-                            <span className="ml-2">{data?.original_language}</span>
+                            <span className="ml-2">{details?.original_language}</span>
                         </p>
                         <p>
                             <span className="font-bold">Release:</span> 
-                            <span className="ml-2">{data?.release_date}</span>
+                            <span className="ml-2">{details?.release_date}</span>
                         </p>
                         <p>
                             <span className="font-bold">Status:</span>
-                            <span className="ml-2">{data?.status}</span>
+                            <span className="ml-2">{details?.status}</span>
                         </p>
                         <p>
                             <span className="font-bold">Country:</span>
-                            {data?.origin_country && (
-                                data?.origin_country.map((country) => {
+                            {details?.origin_country && (
+                                details?.origin_country.map((country) => {
                                     return <span key={country} className="ml-2">{country}</span>
                                 })
                             )}
@@ -94,13 +116,13 @@ export default function Details({ data, data2, data3}: {data: MovieType | null, 
             </div>
 
                 <h1 className="font-bold text-2xl mt-5">Overview</h1>
-                <p>{data?.overview}</p>
+                <p>{details?.overview}</p>
 
                 <h2 className="font-bold text-2xl mt-5">Recomended for you</h2>
                 <div className="grid grid-cols-5 gap-y-1 scrollable-scrollbar">
                     {
-                        data2 && data2.length >0 && (
-                           data2.map((movie)=> {
+                        recommendations.results && recommendations.results.length > 0 && (
+                           recommendations.results.map((movie)=> {
                             return <SmallCard 
                             id={movie.id}
                             poster_path={movie.poster_path}
@@ -115,8 +137,8 @@ export default function Details({ data, data2, data3}: {data: MovieType | null, 
                 <h3 className="font-bold text-2xl mt-5">Reviews</h3>
                 <div>
                     {
-                        data3 && data3.length > 0 && (
-                            data3.map((review) => {
+                        reviews.results && reviews.results.length > 0 && (
+                            reviews.results.map((review) => {
                                 return <ReviewCard
                                 author={review.author}
                                 avatar={review.author_details.avatar_path}

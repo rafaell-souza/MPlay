@@ -2,32 +2,44 @@ import { useRef, useState, useEffect } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import BigCard from "../Cards/big";
 import SmallCard from "../Cards/small";
-import { delay, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import CarouselLeft from "../Button/carouselLeft";
 import CarouselRight from "../Button/carouselRight";
+import { useRequest } from "../../Hooks/useRequest";
 
-type MovieType = {
+const key: string = import.meta.env.VITE_TMDB_KEY;
+
+const playingUrl: string = import.meta.env.VITE_TMDB_NOW_PLAYING;
+const mostRatedUrl: string = import.meta.env.VITE_TMDB_MOST_RATED;
+const popularUrl: string = import.meta.env.VITE_TMDB_POPULAR;
+const upcomingUrl: string = import.meta.env.VITE_TMDB_UPCOMING;
+
+type Results = {
     title: string;
     overview: string;
     poster_path: string;
+    genre_ids: number[];
     backdrop_path: string;
     id: number;
     release_date: string;
     vote_average: number;
 };
 
-type HomeProps = {
-    playing: MovieType[];
-    mostRated: MovieType[];
-    popular: MovieType[];
-    upcoming: MovieType[];
-};
+type Movie = {
+    results: Results[];
+    total_pages: number;
+    total_results: number;
+}
 
 type Behavior = "smooth" | "instant";
 
-export default function Home({ playing, mostRated, popular, upcoming }: HomeProps) {
+export default function Home() {
+    const { data: playing } = useRequest(`${playingUrl}?api_key=${key}`) as { data: Movie };
+    const { data: mostRated } = useRequest(`${mostRatedUrl}?api_key=${key}`) as { data: Movie };
+    const { data: popular } = useRequest(`${popularUrl}?api_key=${key}`) as { data: Movie };
+    const { data: upcoming } = useRequest(`${upcomingUrl}?api_key=${key}`) as { data: Movie };
 
-    const [infinitePlaying, setInfinitePlaying] = useState<MovieType[]>([]);
+    const [infinitePlaying, setInfinitePlaying] = useState<Results[]>([]);
     const [autoScrollCount, setAutoScrollCount] = useState(0);
     const [isUserInteraction, setIsUserInteraction] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);
@@ -40,7 +52,7 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
     const autoScrollRef = useRef<HTMLDivElement>(null);
     const bigCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>, type: Behavior , delay: number) => {
+    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>, type: Behavior, delay: number) => {
         setIsScrolling(true);
         ref.current && ref.current.scrollBy({ left: value, behavior: type });
         setTimeout(() => { setIsScrolling(false); }, delay);
@@ -75,8 +87,11 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
     }
 
     useEffect(() => {
-        setInfinitePlaying([...playing.slice(0, 10), ...(playing.length > 0 ? [playing[0]] : [])]);
-    }, [playing]);
+        if (playing.results) {
+            setInfinitePlaying([...playing.results.slice(0, 10),
+            ...(playing.results.length > 0 ? [playing.results[0]] : [])])
+        }
+    }, [playing.results]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -109,28 +124,28 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     className="z-30 flex absolute bottom-0 right-10 bottom-10"
                 >
                     <motion.div
-                    whileTap={{ scale: 1.2 }}
-                    transition={{ duration: 0.3 }}>
+                        whileTap={{ scale: 1.2 }}
+                        transition={{ duration: 0.3 }}>
                         <IoMdArrowDropleft
-                        className="text-white bg-red-700 text-3xl cursor-pointer rounded-s"
-                        onClick={() => handleScrollLeft()}
+                            className="text-white bg-red-700 text-3xl cursor-pointer rounded-s"
+                            onClick={() => handleScrollLeft()}
                         />
                     </motion.div>
 
                     <motion.div
-                    whileTap={{ scale: 1.2 }}
-                    transition={{ duration: 0.3 }}>
+                        whileTap={{ scale: 1.2 }}
+                        transition={{ duration: 0.3 }}>
                         <IoMdArrowDropright
-                        className="text-white bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
-                        onClick={() => handleScrollRight()}
+                            className="text-white bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
+                            onClick={() => handleScrollRight()}
                         />
                     </motion.div>
                 </div>
 
                 <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                     className="flex overflow-x-scroll scrollable-scrollbar snap-x snap-mandatory"
                     ref={autoScrollRef}>
                     {infinitePlaying.map((movie, index) => (
@@ -163,17 +178,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     </header>
                     <div className="flex justify-between items-center h-[180px] relative">
 
-                        <CarouselLeft 
-                        value={-128} 
-                        el={playingRef} 
-                        onClick={handleScroll}
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth" 
+                        <CarouselLeft
+                            value={-128}
+                            el={playingRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                         <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={playingRef}>
-                            {playing.map((movie) => (
+                            {playing.results?.map((movie) => (
                                 <SmallCard
                                     key={movie.id}
                                     id={movie.id}
@@ -183,13 +198,13 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             ))}
                         </div>
 
-                        <CarouselRight 
-                        value={128} 
-                        el={playingRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselRight
+                            value={128}
+                            el={playingRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                     </div>
@@ -208,17 +223,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
 
                     <div className="flex justify-between items-center h-[180px] relative">
 
-                        <CarouselLeft 
-                        value={-128} 
-                        el={mostRatedRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselLeft
+                            value={-128}
+                            el={mostRatedRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                         <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={mostRatedRef}>
-                            {mostRated.map((movie) => (
+                            {mostRated.results?.map((movie) => (
                                 <SmallCard
                                     key={movie.id}
                                     id={movie.id}
@@ -228,13 +243,13 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             ))}
                         </div>
 
-                        <CarouselRight 
-                        value={128} 
-                        el={mostRatedRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselRight
+                            value={128}
+                            el={mostRatedRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                     </div>
@@ -252,17 +267,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     </header>
                     <div className="flex justify-between items-center h-[180px] relative">
 
-                        <CarouselLeft 
-                        value={-128} 
-                        el={popularRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselLeft
+                            value={-128}
+                            el={popularRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                         <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={popularRef}>
-                            {popular.map((movie) => (
+                            {popular.results?.map((movie) => (
                                 <SmallCard
                                     key={movie.id}
                                     id={movie.id}
@@ -272,13 +287,13 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             ))}
                         </div>
 
-                        <CarouselRight 
-                        value={128} 
-                        el={popularRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselRight
+                            value={128}
+                            el={popularRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                     </div>
@@ -296,17 +311,17 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                     </header>
                     <div className="flex justify-between items-center h-[180px] relative">
 
-                        <CarouselLeft 
-                        value={-128} 
-                        el={upcomingRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselLeft
+                            value={-128}
+                            el={upcomingRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                         <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={upcomingRef}>
-                            {upcoming.map((movie) => (
+                            {upcoming.results?.map((movie) => (
                                 <SmallCard
                                     key={movie.id}
                                     id={movie.id}
@@ -316,13 +331,13 @@ export default function Home({ playing, mostRated, popular, upcoming }: HomeProp
                             ))}
                         </div>
 
-                        <CarouselRight 
-                        value={128} 
-                        el={upcomingRef} 
-                        onClick={handleScroll} 
-                        isScrolling={isScrolling}
-                        delay={250}
-                        type="smooth"
+                        <CarouselRight
+                            value={128}
+                            el={upcomingRef}
+                            onClick={handleScroll}
+                            isScrolling={isScrolling}
+                            delay={250}
+                            type="smooth"
                         />
 
                     </div>
