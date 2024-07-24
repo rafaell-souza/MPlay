@@ -52,7 +52,12 @@ export default function Home() {
     const autoScrollRef = useRef<HTMLDivElement>(null);
     const bigCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const handleScroll = (value: number, ref: React.RefObject<HTMLDivElement>, type: Behavior, delay: number) => {
+    const handleScroll = (
+        value: number, 
+        ref: React.RefObject<HTMLDivElement>, 
+        type: Behavior, 
+        delay: number
+    ) => {
         setIsScrolling(true);
         ref.current && ref.current.scrollBy({ left: value, behavior: type });
         setTimeout(() => { setIsScrolling(false); }, delay);
@@ -167,14 +172,13 @@ export default function Home() {
                 </motion.div>
             </section>
 
-
             <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}>
                 <section>
                     <header>
-                        <h1 className="text-xl mt-7 text-white font-bold">PLAYING NOW</h1>
+                        <h1 className="text-xl mt-7 text-white font-bold">NOW PLAYING</h1>
                     </header>
                     <div className="flex justify-between items-center h-[180px] relative">
 
@@ -194,6 +198,7 @@ export default function Home() {
                                     id={movie.id}
                                     poster_path={movie.poster_path}
                                     title={movie.title}
+                                    vote_average={movie.vote_average}
                                 />
                             ))}
                         </div>
@@ -239,6 +244,7 @@ export default function Home() {
                                     id={movie.id}
                                     poster_path={movie.poster_path}
                                     title={movie.title}
+                                    vote_average={movie.vote_average}
                                 />
                             ))}
                         </div>
@@ -283,6 +289,7 @@ export default function Home() {
                                     id={movie.id}
                                     poster_path={movie.poster_path}
                                     title={movie.title}
+                                    vote_average={movie.vote_average}
                                 />
                             ))}
                         </div>
@@ -327,6 +334,7 @@ export default function Home() {
                                     id={movie.id}
                                     poster_path={movie.poster_path}
                                     title={movie.title}
+                                    vote_average={movie.vote_average}
                                 />
                             ))}
                         </div>

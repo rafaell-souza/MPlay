@@ -14,6 +14,7 @@ type Results = {
     id: number,
     poster_path: string,
     title: string,
+    vote_average: number
 }
 
 type Movie = {
@@ -66,6 +67,7 @@ export default function Search() {
                                                 title={movie.title}
                                                 poster_path={tmdbImageUrl + movie.poster_path}
                                                 key={movie.id}
+                                                vote_average={movie.vote_average}
                                             />
                                         </div>
                                     )

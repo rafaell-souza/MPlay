@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import SmallCard from "../Cards/small";
-import ReviewCard from "../Cards/review";
 import { useRequest } from "../../Hooks/useRequest";
 import { useParams } from "react-router-dom";
+import { GoClock } from "react-icons/go";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -18,20 +18,9 @@ type Movie = {
     origin_country: string[];
     status: string;
     runtime: number;
-    production_countries: {name: string}[];
-}
-
-type Review = {
-    author: string;
-    author_details: {avatar_path: string, username: string};
-    content: string;
-}
-
-type ReviewType = {
-    total_pages: number;
-    total_results: number;
-    results: Review[];
-    page: number;
+    production_countries: { name: string }[];
+    production_companies: { name: string }[];
+    tagline: string;
 }
 
 type Recommend = {
@@ -41,116 +30,83 @@ type Recommend = {
     total_results: number;
 }
 
+type Picture = {
+    backdrops: { file_path: string }[];
+}
+
 export default function Details() {
     const { id } = useParams<{ id: string }>();
 
+    const pictures = `https://api.themoviedb.org/3/movie/${id}/images?api_key=${key}&language=en-US&include_image_language=en,null`;
     const detailsUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
-    const recommendationsUrl = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${key}`;
-    const reviewsUrl = `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${key}`;
     const baseImageUrl = "https://image.tmdb.org/t/p/original";
 
+    const { data: picturesData } = useRequest(pictures) as { data: Picture };
     const { data: details } = useRequest(detailsUrl) as { data: Movie };
-    const { data: recommendations } = useRequest(recommendationsUrl) as { data: Recommend };
-    const { data: reviews } = useRequest(reviewsUrl) as { data: ReviewType };
 
     const hours = details && Math.floor(details?.runtime / 60);
     const minutes = details && details?.runtime % 60;
 
     return (
         <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
         >
-        <section className=" relative top-12 left-[230px] text-white text-white w-[670px] flex flex-col">
-            <div className="flex mt-3 ">
-                <img
-                    className="w-[200px] h-[260px] border rounded border-zinc-300 border-dotted"
-                    src={baseImageUrl + details?.poster_path}
-                    alt={details?.title} />
+            <section 
+            className="relative top-12 left-[230px] text-white text-white w-[670px] flex flex-col">
 
-                <div className="px-5">
-                    <h1 className="font-bold text-2xl">{details?.title}</h1>
+                <div className="flex mt-1">
+                    <img
+                        className="w-[200px] h-[260px] rounded"
+                        src={baseImageUrl + details?.poster_path}
+                        alt={details?.title} />
 
-                    <div className="flex items-center ">
-                        <span className="font-bold">Genres: </span>
-                        {
-                           details && details.genres && (
-                            details?.genres.map((genre) => {
-                                return <span key={genre.id} className="ml-2 text-xs rounded-full border px-2 border-zinc-600 hover:bg-zinc-800 py-[1px]">{genre.name}</span>
-                            })
-                           )
-                        }
+                    <div className="px-2 w-[450px]">
+                        <h1 className="font-bold text-2xl">{details?.title?.toUpperCase()}</h1>
+
+                        <p className="flex justify-start items-center">
+                            <GoClock className="text-sm text-white" />
+                            <span className="ml-1 text-sm"> {hours} hr {minutes} min</span>
+                        </p>
+
+                        <p className="mt-1 text-[13px] leading-tight">{details?.overview}</p>
+
+                        <div className="flex items-center mt-2">
+                            {
+                                details && details.genres && (
+                                    details?.genres.map((genre) => {
+                                        return <span key={genre.id} className="text-xs mr-1 px-2 py-[1px] rounded bg-red-800">{genre.name}</span>
+                                    })
+                                )
+                            }
+                        </div>
                     </div>
-
-                        <p className="flex items-end">
-                            <span className="font-bold">Rate:</span> 
-                            <span className="ml-2">{details?.vote_average}</span> 
-                        </p>
-                        <p>
-                            <span className="font-bold">Language:</span> 
-                            <span className="ml-2">{details?.original_language}</span>
-                        </p>
-                        <p>
-                            <span className="font-bold">Release:</span> 
-                            <span className="ml-2">{details?.release_date}</span>
-                        </p>
-                        <p>
-                            <span className="font-bold">Status:</span>
-                            <span className="ml-2">{details?.status}</span>
-                        </p>
-                        <p>
-                            <span className="font-bold">Country:</span>
-                            {details?.origin_country && (
-                                details?.origin_country.map((country) => {
-                                    return <span key={country} className="ml-2">{country}</span>
-                                })
-                            )}
-                        </p>
-                        <p>
-                            <span className="font-bold">Duration:</span>
-                            <span className="ml-2">{hours}h {minutes}min</span>
-                        </p>
-                </div> 
-            </div>
-
-                <h1 className="font-bold text-2xl mt-5">Overview</h1>
-                <p>{details?.overview}</p>
-
-                <h2 className="font-bold text-2xl mt-5">Recomended for you</h2>
-                <div className="grid grid-cols-5 gap-y-1 scrollable-scrollbar">
-                    {
-                        recommendations.results && recommendations.results.length > 0 && (
-                           recommendations.results.map((movie)=> {
-                            return <SmallCard 
-                            id={movie.id}
-                            poster_path={movie.poster_path}
-                            title={movie.title}
-                            key={movie.id}
-                            />
-                           })
-                        )
-                    }
                 </div>
 
-                <h3 className="font-bold text-2xl mt-5">Reviews</h3>
-                <div>
+                <section className="relative top-5 h-[145px]">
+                    <header>
+                        <h1>
+                            Pictures
+                        </h1>
+                    </header>
+                <div className="flex border-b border-t border-red-950 py-2">
                     {
-                        reviews.results && reviews.results.length > 0 && (
-                            reviews.results.map((review) => {
-                                return <ReviewCard
-                                author={review.author}
-                                avatar={review.author_details.avatar_path}
-                                username={review.author_details.username}
-                                content={review.content}
-                                key={review.author}
+                        picturesData && picturesData.backdrops && (
+                            picturesData.backdrops.slice(0,4).map((picture) => {
+                                return <img
+                                    className="w-[164px] h-[100px] rounded mr-1"
+                                    src={baseImageUrl + picture.file_path}
+                                    alt={details?.title}
+                                    key={picture.file_path}
                                 />
                             })
                         )
                     }
                 </div>
-        </section>
+                </section>
+            </section>
         </motion.div>
     )
 }
