@@ -3,6 +3,7 @@ import SmallCard from "../Cards/small";
 import { useRequest } from "../../Hooks/useRequest";
 import { useParams } from "react-router-dom";
 import { GoClock } from "react-icons/go";
+import Footer from "../Footer/footer";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -106,6 +107,7 @@ export default function Details() {
                     }
                 </div>
                 </section>
+                <Footer />
             </section>
         </motion.div>
     )

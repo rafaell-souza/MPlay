@@ -56,7 +56,7 @@ export default function BigCard({ title, image, id, overview, release_date, vote
 
             <Link to={`/details/${id}?movie=${newTitle}`}>
                 <button
-                    className="w-28 p-2 mb-5 relative z-20 bg-zinc-900 text-white text-center rounded cursor-pointer hover:bg-zinc-950 transition ease-in-out duration-200 text-xl"
+                    className="w-28 p-2 mb-5 relative z-20 bg-red-700 text-white text-center rounded cursor-pointer hover:bg-red-950 transition ease-in-out duration-200 text-xl"
                 >
                     More Info
                 </button>

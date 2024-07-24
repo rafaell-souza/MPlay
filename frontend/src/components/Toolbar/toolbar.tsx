@@ -51,7 +51,7 @@ export default function Toolbar() {
     }, []);
 
     return (
-        <section className="bg-zinc-950 h-full w-56 border-r border-yellow-800 fixed flex flex-col items-start top-10" aria-label="Toolbar">
+        <section className="bg-zinc-950 h-full w-56 border-r border-red-900 fixed flex flex-col items-start top-10" aria-label="Toolbar">
             <nav className="ml-1 pt-3" role="navigation" aria-label="Main navigation">
 
                 <Link to="/">
@@ -62,13 +62,13 @@ export default function Toolbar() {
                 </Link>
 
                 <form onSubmit={handleSubmit} className="flex relative justify-between mt-2" role="search" aria-label="Search movies">
-                    <button className="rounded-full p-1 border border-yellow-600 hover:bg-yellow-700" aria-label="Search">
+                    <button className="rounded-full p-1 border border-red-700 hover:bg-red-900" aria-label="Search">
                         <IoSearchOutline className="text-xl text-zinc-200" />
                     </button>
 
                     <input
                         type="text"
-                        className="h-7 w-full bg-zinc-950 text-zinc-300 placeholder:text-xs text-xs mx-2 px-2 border rounded-full border-yellow-700 outline-none"
+                        className="h-7 w-full bg-zinc-950 text-zinc-300 placeholder:text-xs text-xs mx-2 px-2 border rounded-full border-red-700 outline-none"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder="search movie..."
@@ -77,7 +77,7 @@ export default function Toolbar() {
                 </form>
 
                 <div className="flex flex-col items-center mt-2 mx-2 text-white">
-                    <div onClick={handleToggle} className="flex items-center w-full px-2 py-1 justify-between rounded cursor-pointer border border-yellow-800">
+                    <div onClick={handleToggle} className="flex items-center w-full px-2 py-1 justify-between rounded cursor-pointer border border-red-700">
                         <p className="text-sm">{selectedGenre}</p>
                         <IoMdArrowDropdown className={`text-xl transition-transform ${isVisible ? 'rotate-180' : ''}`} />
                     </div>
@@ -88,12 +88,12 @@ export default function Toolbar() {
                         animate={{ height: 150 }}
                         exit={{ height: 0 }}
                         transition={{ duration: 0.1, ease: "easeInOut" }}
-                        className="w-full flex flex-col  overflow-y-auto scroll-genre rounded bg-zinc-950">
+                        className="w-full flex flex-col overflow-y-auto scroll-genre rounded bg-zinc-950">
                             <ul className="w-full">
                                 {movieGenres.map((genre) => (
                                     <Link to={`/genre/${genre.id}?name=${genre.name}`} key={genre.id}>
                                         <li
-                                            className="px-2 py-[3px] rounded mt-1 bg-zinc-900 cursor-pointer hover:bg-yellow-700 text-sm text-center"
+                                            className="px-2 py-[3px] rounded mt-1 bg-zinc-900 cursor-pointer hover:bg-red-700 text-sm text-center"
                                             onClick={() => handleSelect(genre.name)}
                                         >
                                             {genre.name}
@@ -105,14 +105,6 @@ export default function Toolbar() {
                     )}
                      </AnimatePresence>
                 </div>
-                
-                <div className="flex items-center px-1 mx-2 rounded mt-5 py-1 bg-zinc-900">
-                    <a>
-                        <SiThemoviedatabase className="text-5xl text-blue-500" />
-                    </a>
-                    <p className="text-white text-xs leading-none mx-2">this product uses the TMDb API but is not endorsed or certified by TMDb.</p>
-                </div>
-
             </nav>
         </section>
     );

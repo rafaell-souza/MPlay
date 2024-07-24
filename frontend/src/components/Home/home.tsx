@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import CarouselLeft from "../Button/carouselLeft";
 import CarouselRight from "../Button/carouselRight";
 import { useRequest } from "../../Hooks/useRequest";
+import Footer from "../Footer/footer";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -351,6 +352,7 @@ export default function Home() {
                     </div>
                 </section>
             </motion.div>
+            <Footer />
         </section>
 
     );
