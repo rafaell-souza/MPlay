@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { SiThemoviedatabase } from "react-icons/si";
 
 const key = import.meta.env.VITE_TMDB_KEY;
 
@@ -33,12 +32,11 @@ export default function Toolbar() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (inputValue.length === 0) { return; }
+        if (inputValue.length === 0) return;
 
         navigate(`/search/${inputValue}`);
         setInputValue("");
     };
-
 
     useEffect(() => {
         async function fetchMovieGenres() {
@@ -51,37 +49,42 @@ export default function Toolbar() {
     }, []);
 
     return (
-        <section className="bg-zinc-950 h-full w-56 border-r border-red-900 fixed flex flex-col items-center top-10" aria-label="Toolbar">
+        <section 
+        className="bg-zinc-950 h-full w-56 border-r border-red-900 fixed flex flex-col items-center top-10" aria-label="Toolbar">
 
-                <form onSubmit={handleSubmit} className="w-full flex relative justify-center top-7" role="search" aria-label="Search movies">
+            <form 
+            onSubmit={handleSubmit} 
+            className="w-full flex relative justify-center top-7" 
+            role="search" 
+            aria-label="Search movies">
 
-                    <input
-                        type="text"
-                        className="h-7 w-40 bg-zinc-950 text-zinc-300 placeholder:text-xs text-xs px-2 border-b border-red-900 outline-none mr-1 rounded"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="search movie..."
-                        aria-label="Search input"
-                    />
+                <input
+                    type="text"
+                    className="h-7 w-40 bg-zinc-950 text-zinc-300 placeholder:text-xs text-xs px-2 border-b border-red-900 outline-none mr-1 rounded"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="search movie..."
+                    aria-label="Search input"
+                />
 
-                    <button className="rounded p-1 bg-red-700 hover:opacity-80" aria-label="Search">
-                        <IoSearchOutline className="text-xl text-zinc-200" />
-                    </button>
-                </form>
+                <button className="rounded p-1 bg-red-700 hover:opacity-80" aria-label="Search">
+                    <IoSearchOutline className="text-xl text-zinc-200" />
+                </button>
+            </form>
 
-                <div className="flex flex-col items-center relative top-9 w-48 text-white">
-                    <div onClick={handleToggle} className="flex items-center w-full px-2 py-1 justify-between rounded cursor-pointer border-b border-red-900">
-                        <p className="text-sm">{selectedGenre}</p>
-                        <IoMdArrowDropdown className={`text-xl transition-transform ${isVisible ? 'rotate-180' : ''}`} />
-                    </div>
-                    <AnimatePresence>
+            <div className="flex flex-col items-center relative top-9 w-48 text-white">
+                <div onClick={handleToggle} className="flex items-center w-full px-2 py-1 justify-between rounded cursor-pointer border-b border-red-900">
+                    <p className="text-sm">{selectedGenre}</p>
+                    <IoMdArrowDropdown className={`text-xl transition-transform ${isVisible ? 'rotate-180' : ''}`} />
+                </div>
+                <AnimatePresence>
                     {isVisible && (
-                            <motion.div 
-                        initial={{ height: 0 }}
-                        animate={{ height: 150 }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.1, ease: "easeInOut" }}
-                        className="w-full flex flex-col overflow-y-auto scroll-genre rounded bg-zinc-950">
+                        <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: 150 }}
+                            exit={{ height: 0 }}
+                            transition={{ duration: 0.1, ease: "easeInOut" }}
+                            className="w-full flex flex-col overflow-y-auto scroll-genre rounded bg-zinc-950">
                             <ul className="w-full">
                                 {movieGenres.map((genre) => (
                                     <Link to={`/genre/${genre.id}?name=${genre.name}`} key={genre.id}>
@@ -96,8 +99,8 @@ export default function Toolbar() {
                             </ul>
                         </motion.div>
                     )}
-                     </AnimatePresence>
-                </div>
+                </AnimatePresence>
+            </div>
         </section>
     );
 }

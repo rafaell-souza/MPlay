@@ -17,14 +17,14 @@ type Movie = {
 }
 
 export default function SearchFetch(movieName: string) {
-    const [data, setData] = useState<(Movie)>({ 
-        results: [], 
-        page: 0, 
-        total_results: 0, 
-        total_pages: 0 
+    const [data, setData] = useState<(Movie)>({
+        results: [],
+        page: 0,
+        total_results: 0,
+        total_pages: 0
     });
-    
-    const [loading, setLoading] = useState<boolean>(false);
+
+    const [loading, setLoading] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
 
     const searchFunction = async (url: string) => {
@@ -34,24 +34,37 @@ export default function SearchFetch(movieName: string) {
     }
 
     const handlePageChange = () => {
-        setPage((prev) => prev + 1)
+            setPage(prev => prev + 1);
     }
 
     useEffect(() => {
+        setData({ results: [], page: 0, total_results: 0, total_pages: 0 });
+        setPage(1);
         setLoading(true);
+    }, [movieName])
+
+    useEffect(() => {
         if (movieName) {
             (async () => {
-                const url = `${searchUrl}?api_key=${key}&query=${movieName}&page=${page}`;
-                const data = await searchFunction(url);
-                
-                setData(prev => ({
-                    ...data,
-                    results: page === 1 ? data.results : [...prev.results, ...data.results]
-                }));
+                try {
+                    const url = `${searchUrl}?api_key=${key}&query=${movieName}&page=${page}`;
+                    const data = await searchFunction(url);
+                    const filteredData = data.results.filter((movie: Results) => movie.poster_path !== null);
 
-                setLoading(false);
+                    setData(prev => ({
+                        ...data,
+                        results: page === 1 ? filteredData : [...prev.results, ...filteredData]
+                    }));
+
+                    setLoading(false);
+                }
+                catch (error) {
+                    console.error(error);
+                    setLoading(false);
+                }
             })();
-        }}, [movieName, page])
+        }
+    }, [page, movieName])
 
     return { data, loading, handlePageChange }
 }

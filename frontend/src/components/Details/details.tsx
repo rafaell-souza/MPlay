@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import SmallCard from "../Cards/small";
 import { useRequest } from "../../Hooks/useRequest";
 import { useParams } from "react-router-dom";
 import { GoClock } from "react-icons/go";
 import Footer from "../Footer/footer";
+import Header from "../Header/header";
+import Toolbar from "../Toolbar/toolbar";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -24,13 +25,6 @@ type Movie = {
     tagline: string;
 }
 
-type Recommend = {
-    results: Movie[];
-    page: number
-    total_pages: number;
-    total_results: number;
-}
-
 type Picture = {
     backdrops: { file_path: string }[];
 }
@@ -49,6 +43,9 @@ export default function Details() {
     const minutes = details && details?.runtime % 60;
 
     return (
+        <>
+         <Header />
+         <Toolbar />
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -58,18 +55,20 @@ export default function Details() {
             <section 
             className="relative top-12 left-[230px] text-white text-white w-[670px] flex flex-col">
 
-                <div className="flex mt-1">
+                <div className="flex h-[340px] items-center mt-1 relative">
                     <img
-                        className="w-[200px] h-[260px] rounded"
+                        className="w-[240px] h-full rounded "
                         src={baseImageUrl + details?.poster_path}
-                        alt={details?.title} />
+                        alt={details?.title} 
+                    />
 
-                    <div className="px-2 w-[450px]">
-                        <h1 className="font-bold text-2xl">{details?.title?.toUpperCase()}</h1>
+                    <div className="px-2 w-full h-full ">
+                        <h1 className="font-bold text-xl">{details?.title?.toUpperCase()}</h1>
 
                         <p className="flex justify-start items-center">
                             <GoClock className="text-sm text-white" />
                             <span className="ml-1 text-sm"> {hours} hr {minutes} min</span>
+                            <span className="ml-1 text-sm">  {details?.release_date?.slice(0,4)}</span>
                         </p>
 
                         <p className="mt-1 text-[13px] leading-tight">{details?.overview}</p>
@@ -89,7 +88,7 @@ export default function Details() {
                 <section className="relative top-5 h-[145px]">
                     <header>
                         <h1>
-                            Pictures
+                            {picturesData.backdrops?.length > 0 ? "Pictures" : ""}
                         </h1>
                     </header>
                 <div className="flex border-b border-t border-red-950 py-2">
@@ -110,5 +109,6 @@ export default function Details() {
                 <Footer />
             </section>
         </motion.div>
+        </>
     )
 }

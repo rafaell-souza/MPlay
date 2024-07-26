@@ -7,6 +7,8 @@ import CarouselLeft from "../Button/carouselLeft";
 import CarouselRight from "../Button/carouselRight";
 import { useRequest } from "../../Hooks/useRequest";
 import Footer from "../Footer/footer";
+import Header from "../Header/header";
+import Toolbar from "../Toolbar/toolbar";
 
 const key: string = import.meta.env.VITE_TMDB_KEY;
 
@@ -40,7 +42,6 @@ export default function Home() {
     const { data: popular } = useRequest(`${popularUrl}?api_key=${key}`) as { data: Movie };
     const { data: upcoming } = useRequest(`${upcomingUrl}?api_key=${key}`) as { data: Movie };
 
-    const [infinitePlaying, setInfinitePlaying] = useState<Results[]>([]);
     const [autoScrollCount, setAutoScrollCount] = useState(0);
     const [isUserInteraction, setIsUserInteraction] = useState(false);
     const [isScrolling, setIsScrolling] = useState(false);
@@ -54,9 +55,9 @@ export default function Home() {
     const bigCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     const handleScroll = (
-        value: number, 
-        ref: React.RefObject<HTMLDivElement>, 
-        type: Behavior, 
+        value: number,
+        ref: React.RefObject<HTMLDivElement>,
+        type: Behavior,
         delay: number
     ) => {
         setIsScrolling(true);
@@ -76,6 +77,8 @@ export default function Home() {
                 }
             }
         }
+        if (!isUserInteraction) setIsUserInteraction(true);
+        
     }
 
     function handleScrollRight() {
@@ -90,14 +93,8 @@ export default function Home() {
                 }
             }
         }
+        if (!isUserInteraction) setIsUserInteraction(true);
     }
-
-    useEffect(() => {
-        if (playing.results) {
-            setInfinitePlaying([...playing.results.slice(0, 10),
-            ...(playing.results.length > 0 ? [playing.results[0]] : [])])
-        }
-    }, [playing.results]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -114,7 +111,7 @@ export default function Home() {
                     handleScroll(666, autoScrollRef, "smooth", 540);
                     setAutoScrollCount(0);
                 }
-            }, 5000);
+            }, 4000);
         }
 
         return () => clearInterval(interval);
@@ -122,238 +119,244 @@ export default function Home() {
     }, [autoScrollCount, isUserInteraction]);
 
     return (
-        <section className="relative top-10 w-[666px] h-[1280px] left-[234px] flex flex-col bg-black">
+        <>
+            <Header />
+            <Toolbar />
+            <section className="relative top-10 w-[666px] h-[1300px] left-[234px] flex flex-col bg-black">
 
-            <section className="relative">
-                <div
-                    onClick={() => setIsUserInteraction(true)}
-                    className="z-30 flex absolute bottom-0 right-10 bottom-10"
-                >
-                    <motion.div
-                        whileTap={{ scale: 1.2 }}
-                        transition={{ duration: 0.3 }}>
-                        <IoMdArrowDropleft
-                            className="text-white bg-red-700 text-3xl cursor-pointer rounded-s"
-                            onClick={() => handleScrollLeft()}
-                        />
-                    </motion.div>
+                <section className="relative">
+                    <div
+                        className="z-30 flex absolute bottom-0 right-10 bottom-10"
+                    >
+                        <motion.div
+                            whileTap={{ scale: 1.2 }}
+                            transition={{ duration: 0.3 }}>
+                            <IoMdArrowDropleft
+                                className="text-white bg-red-700 text-3xl cursor-pointer rounded-s"
+                                onClick={() => handleScrollLeft()}
+                            />
+                        </motion.div>
+
+                        <motion.div
+                            whileTap={{ scale: 1.2 }}
+                            transition={{ duration: 0.3 }}>
+                            <IoMdArrowDropright
+                                className="text-white bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
+                                onClick={() => handleScrollRight()}
+                            />
+                        </motion.div>
+                    </div>
 
                     <motion.div
-                        whileTap={{ scale: 1.2 }}
-                        transition={{ duration: 0.3 }}>
-                        <IoMdArrowDropright
-                            className="text-white bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
-                            onClick={() => handleScrollRight()}
-                        />
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex overflow-x-scroll scrollable-scrollbar snap-x snap-mandatory"
+                        ref={autoScrollRef}>
+                        {
+                        playing.results && 
+                        [...playing.results.slice(0, 10),
+                            ...(playing.results.length > 0 ? [playing.results[0]] : [])]
+                            .map((movie, index) => (
+                                <div
+                                    className="w-full shrink-0 snap-center"
+                                    ref={(el) => (bigCardRefs.current[index] = el)}
+                                    key={index}
+                                >
+                                    <BigCard
+                                        title={movie.title}
+                                        image={movie?.backdrop_path}
+                                        overview={movie.overview}
+                                        release_date={movie.release_date}
+                                        vote_average={movie.vote_average}
+                                        id={movie.id}
+                                    />
+                                </div>
+                            ))}
                     </motion.div>
-                </div>
+                </section>
 
                 <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex overflow-x-scroll scrollable-scrollbar snap-x snap-mandatory"
-                    ref={autoScrollRef}>
-                    {infinitePlaying.map((movie, index) => (
-                        <div
-                            className="w-full shrink-0 snap-center"
-                            ref={(el) => (bigCardRefs.current[index] = el)}
-                            key={index}
-                        >
-                            <BigCard
-                                title={movie.title}
-                                image={movie?.backdrop_path}
-                                overview={movie.overview}
-                                release_date={movie.release_date}
-                                vote_average={movie.vote_average}
-                                id={movie.id}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}>
+                    <section>
+                        <header>
+                            <h1 className="text-xl mt-7 text-white font-bold">NOW PLAYING</h1>
+                        </header>
+                        <div className="flex justify-between items-center h-[180px] relative">
+
+                            <CarouselLeft
+                                value={-130}
+                                el={playingRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
                             />
+
+                            <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={playingRef}>
+                                {playing.results?.map((movie) => (
+                                    <SmallCard
+                                        key={movie.id}
+                                        id={movie.id}
+                                        poster_path={movie.poster_path}
+                                        title={movie.title}
+                                        vote_average={movie.vote_average}
+                                    />
+                                ))}
+                            </div>
+
+                            <CarouselRight
+                                value={130}
+                                el={playingRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
                         </div>
-                    ))}
+                    </section>
                 </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <section>
+                        <header>
+                            <h1 className="text-xl mt-4 text-white font-bold">TOP RATED</h1>
+                        </header>
+
+                        <div className="flex justify-between items-center h-[180px] relative">
+
+                            <CarouselLeft
+                                value={-130}
+                                el={mostRatedRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                            <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={mostRatedRef}>
+                                {mostRated.results?.map((movie) => (
+                                    <SmallCard
+                                        key={movie.id}
+                                        id={movie.id}
+                                        poster_path={movie.poster_path}
+                                        title={movie.title}
+                                        vote_average={movie.vote_average}
+                                    />
+                                ))}
+                            </div>
+
+                            <CarouselRight
+                                value={130}
+                                el={mostRatedRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                        </div>
+                    </section>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <section>
+                        <header>
+                            <h1 className="text-xl mt-4 text-white font-bold">POPULAR</h1>
+                        </header>
+                        <div className="flex justify-between items-center h-[180px] relative">
+
+                            <CarouselLeft
+                                value={-130}
+                                el={popularRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                            <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={popularRef}>
+                                {popular.results?.map((movie) => (
+                                    <SmallCard
+                                        key={movie.id}
+                                        id={movie.id}
+                                        poster_path={movie.poster_path}
+                                        title={movie.title}
+                                        vote_average={movie.vote_average}
+                                    />
+                                ))}
+                            </div>
+
+                            <CarouselRight
+                                value={130}
+                                el={popularRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                        </div>
+                    </section>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <section>
+                        <header>
+                            <h1 className="text-xl mt-4 text-white font-bold">UPCOMING</h1>
+                        </header>
+                        <div className="flex justify-between items-center h-[180px] relative">
+
+                            <CarouselLeft
+                                value={-130}
+                                el={upcomingRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                            <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={upcomingRef}>
+                                {upcoming.results?.map((movie) => (
+                                    <SmallCard
+                                        key={movie.id}
+                                        id={movie.id}
+                                        poster_path={movie.poster_path}
+                                        title={movie.title}
+                                        vote_average={movie.vote_average}
+                                    />
+                                ))}
+                            </div>
+
+                            <CarouselRight
+                                value={130}
+                                el={upcomingRef}
+                                onClick={handleScroll}
+                                isScrolling={isScrolling}
+                                delay={250}
+                                type="smooth"
+                            />
+
+                        </div>
+                    </section>
+                </motion.div>
+                <Footer />
             </section>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}>
-                <section>
-                    <header>
-                        <h1 className="text-xl mt-7 text-white font-bold">NOW PLAYING</h1>
-                    </header>
-                    <div className="flex justify-between items-center h-[180px] relative">
-
-                        <CarouselLeft
-                            value={-128}
-                            el={playingRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                        <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={playingRef}>
-                            {playing.results?.map((movie) => (
-                                <SmallCard
-                                    key={movie.id}
-                                    id={movie.id}
-                                    poster_path={movie.poster_path}
-                                    title={movie.title}
-                                    vote_average={movie.vote_average}
-                                />
-                            ))}
-                        </div>
-
-                        <CarouselRight
-                            value={128}
-                            el={playingRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                    </div>
-                </section>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-            >
-                <section>
-                    <header>
-                        <h1 className="text-xl mt-4 text-white font-bold">TOP RATED</h1>
-                    </header>
-
-                    <div className="flex justify-between items-center h-[180px] relative">
-
-                        <CarouselLeft
-                            value={-128}
-                            el={mostRatedRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                        <div className="overflow-x-auto flex scrollable-scrollbar h-48 items-center snap-x snap-mandatory" ref={mostRatedRef}>
-                            {mostRated.results?.map((movie) => (
-                                <SmallCard
-                                    key={movie.id}
-                                    id={movie.id}
-                                    poster_path={movie.poster_path}
-                                    title={movie.title}
-                                    vote_average={movie.vote_average}
-                                />
-                            ))}
-                        </div>
-
-                        <CarouselRight
-                            value={128}
-                            el={mostRatedRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                    </div>
-                </section>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-            >
-                <section>
-                    <header>
-                        <h1 className="text-xl mt-4 text-white font-bold">POPULAR</h1>
-                    </header>
-                    <div className="flex justify-between items-center h-[180px] relative">
-
-                        <CarouselLeft
-                            value={-128}
-                            el={popularRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                        <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={popularRef}>
-                            {popular.results?.map((movie) => (
-                                <SmallCard
-                                    key={movie.id}
-                                    id={movie.id}
-                                    poster_path={movie.poster_path}
-                                    title={movie.title}
-                                    vote_average={movie.vote_average}
-                                />
-                            ))}
-                        </div>
-
-                        <CarouselRight
-                            value={128}
-                            el={popularRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                    </div>
-                </section>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-            >
-                <section>
-                    <header>
-                        <h1 className="text-xl mt-4 text-white font-bold">UPCOMING</h1>
-                    </header>
-                    <div className="flex justify-between items-center h-[180px] relative">
-
-                        <CarouselLeft
-                            value={-128}
-                            el={upcomingRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                        <div className="snap-x snap-mandatory overflow-x-auto flex scrollable-scrollbar h-48 items-center" ref={upcomingRef}>
-                            {upcoming.results?.map((movie) => (
-                                <SmallCard
-                                    key={movie.id}
-                                    id={movie.id}
-                                    poster_path={movie.poster_path}
-                                    title={movie.title}
-                                    vote_average={movie.vote_average}
-                                />
-                            ))}
-                        </div>
-
-                        <CarouselRight
-                            value={128}
-                            el={upcomingRef}
-                            onClick={handleScroll}
-                            isScrolling={isScrolling}
-                            delay={250}
-                            type="smooth"
-                        />
-
-                    </div>
-                </section>
-            </motion.div>
-            <Footer />
-        </section>
-
+        </>
     );
 }

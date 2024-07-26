@@ -11,7 +11,7 @@ const Header = () => {
     return (
         <header 
         className="border border-zinc-700 w-full h-10 flex justify-between px-6 items-center fixed z-50  bg-zinc-900">
-            <h1 onClick={handleReturnhome} className="text-3xl text-white font-bold hover:opacity-90">MO</h1>
+            <h1 onClick={handleReturnhome} className="text-3xl text-white font-bold hover:opacity-90">Flix-M</h1>
 
             <div className="text-white text-[12px] w-44 justify-between flex">
         	<Link to="/login" className="py-1 px-2 rounded border border-red-800 hover:text-red-600">

@@ -24,7 +24,7 @@ export default function Footer() {
                 <div className="border-r border-zinc-700"></div>
                 <a target="_blank" href="https://www.themoviedb.org/">
                     <li>
-                        <SiThemoviedatabase className="text-3xl p-1 rounded bg-blue-900 text-white" />
+                        <SiThemoviedatabase className="text-3xl p-1 rounded bg-blue-900 hover:opacity-80 text-white" />
                     </li>
                 </a>
             </ul>

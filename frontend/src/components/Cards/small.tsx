@@ -1,5 +1,5 @@
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -12,13 +12,11 @@ type CardProps = {
 
 export default function SmallCard({ id, poster_path, title, vote_average }: CardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
-
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original"
 
     const handleImageLoaded = () => {
         setImageLoaded(true);
     }
-
     const fixedTitle = title.replace(/ /g, '-')
 
     return (
