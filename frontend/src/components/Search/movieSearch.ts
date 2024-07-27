@@ -16,7 +16,7 @@ type Movie = {
     total_pages: number;
 }
 
-export default function SearchFetch(movieName: string) {
+export default function SearchFetch(query: string) {
     const [data, setData] = useState<(Movie)>({
         results: [],
         page: 0,
@@ -33,21 +33,17 @@ export default function SearchFetch(movieName: string) {
         return data
     }
 
-    const handlePageChange = () => {
-            setPage(prev => prev + 1);
-    }
-
     useEffect(() => {
-        setData({ results: [], page: 0, total_results: 0, total_pages: 0 });
         setPage(1);
+        setData({ results: [], page: 0, total_results: 0, total_pages: 0 });
         setLoading(true);
-    }, [movieName])
+    }, [query])
 
     useEffect(() => {
-        if (movieName) {
+        if (query) {
             (async () => {
                 try {
-                    const url = `${searchUrl}?api_key=${key}&query=${movieName}&page=${page}`;
+                    const url = `${searchUrl}?api_key=${key}&query=${query}&page=${page}`;
                     const data = await searchFunction(url);
                     const filteredData = data.results.filter((movie: Results) => movie.poster_path !== null);
 
@@ -64,7 +60,7 @@ export default function SearchFetch(movieName: string) {
                 }
             })();
         }
-    }, [page, movieName])
+    }, [page, query])
 
-    return { data, loading, handlePageChange }
+    return { data, loading, setPage }
 }

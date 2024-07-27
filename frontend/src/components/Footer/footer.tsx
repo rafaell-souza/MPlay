@@ -4,7 +4,7 @@ import { SiThemoviedatabase } from 'react-icons/si'
 
 export default function Footer() {
     return (
-        <div className="flex flex-col py-3 items-center h-36 mt-6 bg-zinc-950">
+        <div className="flex z-20 flex-col py-3 items-center h-36 mt-6 bg-zinc-950">
             <ul className="flex h-8 w-40 justify-between">
                 <a target="_blank" href="https://github.com/rafaell-souza">
                     <li>
