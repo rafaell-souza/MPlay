@@ -61,18 +61,18 @@ export default function Details() {
                 <section
                     className="p-1 relative top-12 left-[230px] text-white text-white w-[670px] flex flex-col">
                     <img
-                        className="w-full h-full inset-0 absolute rounded object-cover opacity-30"
+                        className="w-full h-full inset-0 absolute rounded object-cover opacity-20"
                         src={baseImageUrl + details?.poster_path}
                         alt="background theme" />
 
-                    <div className="flex h-[340px] items-center relative">
+                    <div className="flex relative">
                         <img
                             className="w-[240px] h-full rounded"
                             src={baseImageUrl + details?.poster_path}
                             alt={details?.title}
                         />
 
-                        <div className="px-2 w-full h-full ">
+                        <div className="overflow-y-auto relative scrollable-scrollbar px-2 w-full">
                             <h1 className="font-bold text-xl">{details?.title?.toUpperCase()}</h1>
 
                             <p className="flex items-center">
@@ -90,7 +90,6 @@ export default function Details() {
                                     )
                                 }
                             </div>
-
                             <p className="relative top-2 text-[13px] leading-tight">{details?.overview}</p>
                         </div>
                     </div>
