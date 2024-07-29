@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Account" ADD COLUMN     "address" VARCHAR(100) NOT NULL DEFAULT '',
-ADD COLUMN     "phone" VARCHAR(20) NOT NULL DEFAULT '';

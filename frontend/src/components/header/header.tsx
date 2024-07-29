@@ -18,8 +18,8 @@ const Header = () => {
                 NEW ACCOUNT
             </Link>
 
-            <Link to="/sign up" className="rounded px-2 items-center flex bg-red-700 hover:bg-red-900">
-                SIGN IN
+            <Link to="/signup" className="rounded px-2 items-center flex bg-red-700 hover:bg-red-900">
+                SIGN UP
             </Link>
             </div>
         </header>

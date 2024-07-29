@@ -7,11 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id       Int      @id @default(autoincrement())
-  name     String   @db.VarChar(50)
-  email    String   @unique @db.VarChar(250)
-  password String   @db.VarChar(70)
-  phone    String   @db.VarChar(20) @default("")
-  address  String   @db.VarChar(100) @default("")
+model User {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(50)
+  email String @unique @db.VarChar(250)
+  password String @db.VarChar(70)
+  phone String @db.VarChar(15)
 }
