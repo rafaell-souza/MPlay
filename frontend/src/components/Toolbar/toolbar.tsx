@@ -1,24 +1,24 @@
-import { IoSearchOutline, IoHome } from "react-icons/io5";
-import { useState, useEffect } from "react";
+import { IoSearchOutline } from "react-icons/io5";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { motion } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
+import useRequest from "../../Hooks/useRequest";
 
 const key = import.meta.env.VITE_TMDB_KEY;
 
 type Genre = {
-    id: number;
-    name: string;
+    genres: {
+        id: number;
+        name: string;
+    }[];
 };
 
 export default function Toolbar() {
+    const genreUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=en-US`;
+
     const [inputValue, setInputValue] = useState<string>("");
-    const [movieGenres, setMovieGenres] = useState<Genre[]>([]);
 
     const navigate = useNavigate();
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (inputValue.length === 0) return;
@@ -27,15 +27,7 @@ export default function Toolbar() {
         setInputValue("");
     };
 
-    useEffect(() => {
-        async function fetchMovieGenres() {
-            const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            setMovieGenres(data.genres);
-        }
-        fetchMovieGenres();
-    }, []);
+    const { data: genres } = useRequest(genreUrl) as { data: Genre };
 
     return (
         <section
@@ -63,8 +55,8 @@ export default function Toolbar() {
 
             <ul className="w-full grid grid-cols-3  relative top-10 px-1">
                 {
-                    movieGenres.map((genre) => (
-                        <Link to={`/genre/${genre.id}?name=${genre.name}`} key={genre.id}>
+                    genres.genres?.map((genre) => (
+                        <Link to={`/genre/${genre.name}`} key={genre.id}>
                             <li
                                 className="text-white rounded bg-red-800 hover:bg-red-600 mt-1 mr-[3px] text-center text-[9px] py-1 font-bold"
                             >

@@ -36,6 +36,7 @@ export default function SmallCard({ id, poster_path, title, vote_average }: Card
             <img
                 src={tmdbImageUrl + poster_path}
                 alt="poster"
+                loading='lazy'
                 className={`w-full h-full absolute rounded object-center object-cover ${imageLoaded ? 'visible' : 'hidden'}`}
                 onLoad={handleImageLoaded}
             />

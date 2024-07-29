@@ -5,7 +5,7 @@ import SmallCard from "../Cards/small";
 import { motion } from 'framer-motion';
 import CarouselLeft from "../Button/carouselLeft";
 import CarouselRight from "../Button/carouselRight";
-import { useRequest } from "../../Hooks/useRequest";
+import useRequest from "../../Hooks/useRequest";
 import Footer from "../Footer/footer";
 import Header from "../Header/header";
 import Toolbar from "../Toolbar/toolbar";

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useRequest(url: string) {
+export default function useRequest(url: string) {
     const [data, setData] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
 

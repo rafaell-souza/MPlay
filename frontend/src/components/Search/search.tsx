@@ -1,12 +1,12 @@
 import SmallCard from "../Cards/small";
-import moviesSearch from "./movieSearch";
+import useRequest2 from "../../Hooks/useRequest2";
 import Footer from "../Footer/footer";
 import Header from "../Header/header";
 import Toolbar from "../Toolbar/toolbar";
 
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import { useParams } from "react-router";
 import { AnimatePresence } from "framer-motion";
 
@@ -28,12 +28,14 @@ type Callback = {
     data: Movie,
     loading: boolean,
     setPage: React.Dispatch<React.SetStateAction<number>>,
+    hasMore: boolean,
 }
 
 export default function Search() {
     const tmdbImageUrl = "https://image.tmdb.org/t/p/original"
-    const { movie } = useParams<{ movie: string }>() as { movie: string };
-    const { data, loading, setPage } = moviesSearch(movie) as Callback;
+
+    const { query } = useParams<{ query: string }>() as { query: string };
+    const { data, loading, setPage, hasMore } = useRequest2(query) as Callback;
 
     const observer = useRef<IntersectionObserver | null>(null);
 
@@ -49,7 +51,8 @@ export default function Search() {
             }, { threshold: 0.5 });
             if (node) observer.current.observe(node);
         }
-    }, [loading, data.page, data.total_pages])
+    }, [loading, data.page])
+
 
     return (
         <>
@@ -65,7 +68,7 @@ export default function Search() {
                             transition={{ duration: 0.5 }}
                             className=" flex relative top-36 mx-auto items-center w-[666px] justify-center">
                             <AiOutlineLoading3Quarters className="h-7 w-7 mr-1 animate-spin" />
-                            <h1 className="ml-1 ">LOADING...</h1>
+                            <h1 className="ml-1 ">loading...</h1>
                         </motion.div>
 
                     ) : (data && data.results?.length > 0 ? (
@@ -109,6 +112,16 @@ export default function Search() {
                                     })
                                 }
                             </div>
+                            {
+                                hasMore ? (
+                                    <div className="h-[50px] items-center flex justify-center">
+                                        <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 text-white" />
+                                        <p className="ml-2 text-sm">Loading...</p>
+                                    </div>
+                                ) : (
+                                    <Footer />
+                                )
+                            }
                         </ motion.section>
 
                     ) : (data.results.length === 0 && !loading && (
@@ -118,7 +131,7 @@ export default function Search() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.5 }}
                             className="w-[666px] relative top-3 flex flex-col">
-                            <p className="py-2 text-md font-bold text-zinc-300 border-b border-zinc-900">No results found for: {movie}</p>
+                            <p className="py-2 text-md font-bold text-zinc-300 border-b border-zinc-900">No results found for: {query}</p>
                             <Footer />
                         </motion.div>
                     )

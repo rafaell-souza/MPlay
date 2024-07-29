@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useRequest } from "../../Hooks/useRequest";
+import useRequest from "../../Hooks/useRequest";
 import { useParams } from "react-router-dom";
 import { GoClock } from "react-icons/go";
 import Footer from "../Footer/footer";

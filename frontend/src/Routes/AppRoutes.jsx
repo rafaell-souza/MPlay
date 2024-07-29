@@ -17,9 +17,9 @@ export default function AppRoutes() {
         }>
             <Routes>
                 <Route path="/" element={< Home />} />
-                <Route path="/search/:movie" element={<Search />} />
+                <Route path="/search/:query" element={<Search />} />
                 <Route path="/details/:id" element={<Details />} />
-                <Route path="/genre/:genre_name" element={<Genres />} />
+                <Route path="/genre/:name" element={<Genres />} />
             </Routes>
         </Suspense>
     )
