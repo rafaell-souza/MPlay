@@ -1,4 +1,4 @@
-import AppRoutes from "./Routes/AppRoutes"
+import AppRoutes from "./Routes/AppRoutes.tsx"
 import { BrowserRouter } from "react-router-dom"
 import { motion } from "framer-motion";
 
