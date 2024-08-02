@@ -8,6 +8,7 @@ const Search = lazy(() => import('../components/Search/search'));
 const Genres = lazy(() => import('../components/Genres/genres'));
 const SignUp = lazy(() => import('../components/SignUp/signUp'));
 const SignIn = lazy(() => import('../components/SignIn/signIn'));
+const NotFound = lazy(() => import('../components/NotFound/notFound'));
 
 export default function AppRoutes() {
     return (
@@ -23,6 +24,7 @@ export default function AppRoutes() {
                 <Route path="/genre/:name" element={<Genres />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/signin" element={<SignIn />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Suspense>
     );

@@ -18,14 +18,14 @@ const Header = ({ text, link, handleClick }: HeaderProps) => {
     return (
         <header
             className="border border-zinc-700 w-full h-10 flex justify-between px-6 items-center fixed z-50  bg-zinc-900">
-            <h1 onClick={handleReturnhome} className="text-3xl text-white font-bold hover:opacity-90">Flix-M</h1>
+            <h1 onClick={handleReturnhome} className="text-3xl text-white font-bold hover:opacity-70">CNA</h1>
 
             <Link
                 to={link}
                 onClick={handleClick}
-                className="py-1 px-2 rounded flex items-center text-white text-[13px] bg-red-700 border border-red-600">
+                className="py-1 px-2 rounded flex items-center text-white text-[13px] bg-red-700 border border-red-600 hover:bg-opacity-80">
                 <RiUser6Line className="text-white text-xl" />
-                {text ? text : "TEXT IN"}
+                {text}
             </Link>
 
 
