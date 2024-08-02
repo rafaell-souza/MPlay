@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
-import { useNavigate } from "react-router";
 import BigCard from "../Cards/big";
 import SmallCard from "../Cards/small";
 import { motion } from 'framer-motion';
@@ -119,14 +118,9 @@ export default function Home() {
 
     }, [autoScrollCount, isUserInteraction]);
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        
-    }
-
     return (
         <>
-            <Header link="signup" text="Logout" handleClick={logout} />
+            <Header link="signin" text="sign in" />
             <Toolbar />
             <section className="relative top-10 w-[666px] h-[1300px] left-[234px] flex flex-col bg-black">
 

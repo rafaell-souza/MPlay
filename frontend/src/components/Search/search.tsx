@@ -53,10 +53,9 @@ export default function Search() {
         }
     }, [loading, data.page])
 
-
     return (
         <>
-            <Header />
+            <Header link="signin" text="sign in" />
             <Toolbar />
             <section className="relative top-10 pb-2 left-[234px] text-white w-[666px]">
                 <AnimatePresence>

@@ -55,7 +55,8 @@ body::-webkit-scrollbar-thumb {
     );
 }
 
-.signup-bg {
+.signup-bg,
+.signin-bg {
     background-image: linear-gradient(
         to bottom left, transparent 10%, black 50%
     );

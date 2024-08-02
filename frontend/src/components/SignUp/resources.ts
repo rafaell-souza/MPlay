@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 type FormData = z.infer<typeof schema>;
 
-export default function Helper(){
+export default function Resources(){
     const [isVisible, setIsVisible] = useState({
         password: false,
         repeatPassword: false

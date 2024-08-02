@@ -1,7 +1,9 @@
-import { motion } from "framer-motion";
-import useRequest from "../../Hooks/useRequest";
-import { useParams } from "react-router-dom";
 import { GoClock } from "react-icons/go";
+
+import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
+
+import useRequest from "../../Hooks/useRequest";
 import Footer from "../Footer/footer";
 import Header from "../Header/header";
 import Toolbar from "../Toolbar/toolbar";
@@ -12,25 +14,14 @@ type Movie = {
     id: number
     poster_path: string;
     genres: { id: number, name: string }[];
-    vote_average: number;
     title: string;
-    original_language: string;
     overview: string;
     release_date: string;
-    origin_country: string[];
-    status: string;
     runtime: number;
-    production_countries: { name: string }[];
-    production_companies: { name: string }[];
-    tagline: string;
 }
 
 type Picture = {
     backdrops: { file_path: string }[];
-}
-
-type Video = {
-    results: { key: string }[];
 }
 
 export default function Details() {
@@ -38,19 +29,17 @@ export default function Details() {
 
     const pictures = `https://api.themoviedb.org/3/movie/${id}/images?api_key=${key}&language=en-US&include_image_language=en,null`;
     const detailsUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
-    const videosUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${key}&language=en-US`;
     const baseImageUrl = "https://image.tmdb.org/t/p/original";
 
     const { data: picturesData } = useRequest(pictures) as { data: Picture };
     const { data: details } = useRequest(detailsUrl) as { data: Movie };
-    const { data: videos } = useRequest(videosUrl) as { data: Video };
 
     const hours = details && Math.floor(details?.runtime / 60);
     const minutes = details && details?.runtime % 60;
 
     return (
         <>
-            <Header />
+            <Header link="signin" text="sign in" />
             <Toolbar />
             <motion.div
                 initial={{ opacity: 0 }}

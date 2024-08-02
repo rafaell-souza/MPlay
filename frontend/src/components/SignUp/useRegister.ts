@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import schema from './schema';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 type FormData = z.infer<typeof schema>;
 
 export default function useRegister() {
     const navigate = useNavigate();
+    const [status, setStatus] = useState<number | null>(null);
 
     const registerUser = async (data: FormData) => {
         try {
@@ -21,11 +23,12 @@ export default function useRegister() {
                 navigate("/");
             } else {
                 console.log("Failed to register user!");
+                setStatus(response.status);
             }
         } catch (error) {
             console.error("An error occurred while registering the user:", error);
         }
     };
 
-    return { registerUser };
+    return { registerUser, status };
 }

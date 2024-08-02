@@ -67,7 +67,7 @@ export default function Genres() {
 
     return (
         <>
-            <Header />
+            <Header link="signin" text="sign in" />
             <Toolbar />
             <motion.div
                 initial={{ opacity: 0 }}

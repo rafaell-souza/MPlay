@@ -53,7 +53,7 @@ export default function Toolbar() {
                 </button>
             </form>
 
-            <ul className="w-full grid grid-cols-3  relative top-10 px-1">
+            <ul className="w-full grid grid-cols-3 relative top-10 px-1">
                 {
                     genres.genres?.map((genre) => (
                         <Link to={`/genre/${genre.name}`} key={genre.id}>
