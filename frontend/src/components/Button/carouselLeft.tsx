@@ -16,7 +16,7 @@ type Button = {
 export default function CarouselLeft({ value, el, onClick, style, isScrolling, delay, type }: Button) {
     return (
         <motion.div
-        className={`absolute left-0 z-20 ${style}`} 
+        className={`absolute left-0 z-20 hidden md:block ${style}`} 
         whileTap={{ scale: 1.1 }}>
             <IoMdArrowDropleft
             onClick={() => !isScrolling && onClick(value, el, type, delay)}

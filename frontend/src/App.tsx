@@ -1,6 +1,7 @@
 import AppRoutes from "./Routes/AppRoutes.tsx"
 import { BrowserRouter } from "react-router-dom"
 import { motion } from "framer-motion";
+import MenuProvider from "./Context/menuContext.tsx";
 
 export default function App() {
     return (
@@ -12,7 +13,9 @@ export default function App() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5 }}
                     >
-                    <AppRoutes />
+                    <MenuProvider>
+                        <AppRoutes />
+                    </MenuProvider>
                 </motion.div>
         </ BrowserRouter>
         </>

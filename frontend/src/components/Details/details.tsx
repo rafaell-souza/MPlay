@@ -18,6 +18,7 @@ type Movie = {
     overview: string;
     release_date: string;
     runtime: number;
+    
 }
 
 type Picture = {
@@ -48,55 +49,59 @@ export default function Details() {
                 transition={{ duration: 0.5 }}
             >
                 <section
-                    className="p-1 relative top-12 left-[230px] text-white text-white w-[670px] flex flex-col">
+                    className="p-1 relative top-10 md:left-[230px] text-white text-white md:w-[670px] flex flex-col">
                     <img
                         className="w-full h-full inset-0 absolute rounded object-cover opacity-20"
                         src={baseImageUrl + details?.poster_path}
                         alt="background theme" />
 
-                    <div className="flex relative">
+                    <div className="flex top-8 md:top-0 flex-col md:flex-row items-center md:items-start relative">
                         <img
-                            className="w-[240px] h-full rounded"
+                            className="w-[240px] rounded"
                             src={baseImageUrl + details?.poster_path}
                             alt={details?.title}
                         />
 
-                        <div className="overflow-y-auto relative scrollable-scrollbar px-2 w-full">
-                            <h1 className="font-bold text-xl">{details?.title?.toUpperCase()}</h1>
+                        <div className="relative h-full flex flex-col scrollable-scrollbar md:px-2 w-full ">
 
-                            <p className="flex items-center">
-                                <GoClock className="text-sm text-white" />
-                                <span className="ml-1 text-sm"> {hours} hr {minutes} min</span>
-                                <span className="ml-1 text-[14px]">- {details?.release_date?.slice(0, 4)}</span>
+                            <h1 className="font-bold text-3xl text-center md:text-start top-8 md:top-0 relative">{details?.title?.toUpperCase()}</h1>
+
+                            <p className="relative top-8 md:top-0 flex items-center justify-center md:justify-start ">
+
+                                <GoClock className="text-xl mr-1 md:mr-0 md:text-xl text-white" />
+                                <span className="ml-1 text-2xl"> {hours} hr {minutes} min</span>
+                                <span className="ml-1 text-2xl">- {details?.release_date?.slice(0, 4)}</span>
+
                             </p>
 
-                            <div className="flex items-center mt-2">
+                            <div className="flex items-center relative md:top-2 top-12 justify-center md:justify-start relative">
                                 {
                                     details && details.genres && (
                                         details?.genres.map((genre) => {
-                                            return <span key={genre.id} className="text-xs mr-1 px-2 py-[1px] rounded bg-red-800">{genre.name}</span>
+                                            return <span key={genre.id} className="text-2xl md:text-xs mr-3 md:mr-1 px-2 py-[1px] rounded md:bg-red-800">{genre.name}</span>
                                         })
                                     )
                                 }
                             </div>
-                            <p className="relative top-2 text-[13px] leading-tight">{details?.overview}</p>
+                            <p className="relative text-start mt-24 font-bold px-1 md:px-0 text-2xl md:mt-6 md:text-[15px] leading-tight">Overview</p>
+                            <p className="relative text-start px-1 md:px-0 text-2xl mt-3 md:mt-2 md:text-[15px] leading-tight">{details?.overview}</p>
                         </div>
                     </div>
 
                     {
                         picturesData.backdrops?.length > 0 && (
-                            <section className="mb-6 relative top-5 h-[145px]">
+                            <section className=" relative md:mt-8 mt-16 ">
                                 <header>
                                     <h1>
                                         {picturesData.backdrops?.length > 0 ? "Pictures" : ""}
                                     </h1>
                                 </header>
-                                <div className="grid grid-cols-4 border-b border-t border-red-700 py-2">
+                                <div className="grid grid-cols-2 md:grid-cols-4 border-b border-t border-red-700 py-2 gap-3 md:gap-0">
                                     {
                                         picturesData && picturesData.backdrops && (
-                                            picturesData.backdrops.slice(0, 4).map((picture) => {
+                                            picturesData.backdrops.slice(0, 12).map((picture) => {
                                                 return <img
-                                                    className="w-[160px] h-[100px] rounded"
+                                                    className="md:w-[160px] md:h-[100px] rounded w-[270px] h-[130px]"
                                                     src={baseImageUrl + picture.file_path}
                                                     alt={details?.title}
                                                     key={picture.file_path}
@@ -108,7 +113,6 @@ export default function Details() {
                             </section>
                         )
                     }
-                    <Footer />
                 </section>
             </motion.div>
         </>

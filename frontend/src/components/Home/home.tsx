@@ -122,7 +122,7 @@ export default function Home() {
         <>
             <Header link="signin" text="sign in" />
             <Toolbar />
-            <section className="relative top-10 w-[666px] h-[1300px] left-[234px] flex flex-col bg-black">
+            <section className="relative top-10 md:w-[666px] lg:w-[800px] h-[1300px] md:left-[233px] flex flex-col bg-black">
 
                 <section className="relative">
                     <div
@@ -132,7 +132,7 @@ export default function Home() {
                             whileTap={{ scale: 1.2 }}
                             transition={{ duration: 0.3 }}>
                             <IoMdArrowDropleft
-                                className="text-white bg-red-700 text-3xl cursor-pointer rounded-s"
+                                className="text-white hidden md:block bg-red-700 text-3xl cursor-pointer rounded-s"
                                 onClick={() => handleScrollLeft()}
                             />
                         </motion.div>
@@ -141,7 +141,7 @@ export default function Home() {
                             whileTap={{ scale: 1.2 }}
                             transition={{ duration: 0.3 }}>
                             <IoMdArrowDropright
-                                className="text-white bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
+                                className="text-white hidden md:block bg-red-700 text-3xl ml-[2px] cursor-pointer rounded-e"
                                 onClick={() => handleScrollRight()}
                             />
                         </motion.div>

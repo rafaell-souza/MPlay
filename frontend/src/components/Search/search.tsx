@@ -57,7 +57,7 @@ export default function Search() {
         <>
             <Header link="signin" text="sign in" />
             <Toolbar />
-            <section className="relative top-10 pb-2 left-[234px] text-white w-[666px]">
+            <section className="pl-6 md:pl-0 pt-8 md:pt-0 relative top-10 pb-2 md:left-[234px] text-white w-[490px] md:w-[666px]">
                 <AnimatePresence>
                     {loading ? (
                         <motion.div
@@ -76,7 +76,7 @@ export default function Search() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.5 }}>
-                            <div className="grid grid-cols-5">
+                            <div className="grid grid-cols-3 md:grid-cols-5">
                                 {
                                     data.results.map((movie, index) => {
                                         if (data.results.length === index + 1) {

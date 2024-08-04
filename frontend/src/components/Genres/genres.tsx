@@ -74,7 +74,7 @@ export default function Genres() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
             >
-                <section className="relative top-10 pb-2 left-[234px] text-white w-[666px]">
+                <section className="relative top-20 md:top-10 pb-2 md:left-[234px] text-white md:w-[666px]">
                     {
                         loading ? (
                             <div className="h-[350px] items-center flex justify-center">
@@ -83,8 +83,8 @@ export default function Genres() {
                             </div>
                         ) : (
                             <>
-                            <h1 className="relative text-xl top-1 border-b border-zinc-800">Genre: {name}</h1>
-                            <div className="grid grid-cols-5 mt-1">
+                            <h1 className="relative ml-6 md:ml-0 text-xl top-1 border-b border-zinc-800">Genre: {name}</h1>
+                            <div className="grid grid-cols-3 ml-6 md:ml-0 md:grid-cols-5 mt-1">
                                 {
                                     movies?.results?.map((movie, index) => (
                                         movies.results.length === index + 1 ? (
@@ -112,13 +112,11 @@ export default function Genres() {
                                 }
                             </div>
                             {
-                                hasMore ? (
+                                hasMore && (
                                     <div className="h-[50px] items-center flex justify-center">
                                         <AiOutlineLoading3Quarters className="animate-spin h-5 w-5 text-white" />
                                         <p className="ml-2 text-sm">Loading...</p>
                                     </div>
-                                ) : (
-                                    <Footer />
                                 )
                             }
                             </>

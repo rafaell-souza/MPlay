@@ -15,7 +15,7 @@ type Button = {
 export default function CarouselRight({ value, el, onClick, isScrolling, delay, type }: Button) {
     return (
         <motion.div 
-        className="absolute right-0"
+        className="absolute right-0 md:block hidden"
         whileTap={{ scale: 1.1 }}>
             <IoMdArrowDropright
                 onClick={() => !isScrolling && onClick(value, el, type, delay)}
