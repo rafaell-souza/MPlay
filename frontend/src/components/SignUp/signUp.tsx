@@ -16,15 +16,27 @@ export default function SignIn() {
 
     const { registerUser, status } = useRegister();
 
+    const formatNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        let phone = e.target.value.replace(/\D/g, '');
+        if (phone.length > 11) {
+            phone = phone.slice(0, 11);
+        }
+        if (phone.length === 11) {
+            phone = phone.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else if (phone.length === 10) {
+            phone = phone.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+        }
+        return phone;
+    }
+
     return (
         <AnimatePresence>
             <motion.section
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                key="signin-section"
-            >
+                transition={{ duration: 0.3 }}>
                 <Header text='Sign in' link='/signin' />
                 <section
                     style={{
@@ -100,14 +112,13 @@ export default function SignIn() {
                             <input
                                 type={isVisible.password ? "text" : "password"}
                                 placeholder='Password'
-                                autoComplete="new-password"
                                 className={`bg-zinc-900 md:bg-zinc-950 py-3 md:py-0 bg-opacity-80 w-full border-b ${errors.password ? "border-red-700" : "border-zinc-800"} outline-none md:px-1 px-2 placeholder:text-2xl text-xl md:text-base placeholder:text-zinc-600 md:placeholder:text-[13px]`}
                                 {...register("password")}
                             />
                             {isVisible.password ? (
                                 <IoEye
                                     onClick={() => setIsVisible({ ...isVisible, password: !isVisible.password })}
-                                    className='absolute top-1 text-3xl right-2 text-zinc-500' />
+                                    className='absolute top-1 text-3xl md:text-base right-2 text-zinc-500' />
                             ) : (
                                 <IoEyeOff
                                     onClick={() => setIsVisible({ ...isVisible, password: !isVisible.password })}
@@ -131,14 +142,13 @@ export default function SignIn() {
                             <input
                                 type={isVisible.repeatPassword ? "text" : "password"}
                                 placeholder='Confirm Password'
-                                autoComplete="new-password"
                                 className={`bg-zinc-900 md:bg-zinc-950 py-3 md:py-0 bg-opacity-80 w-full border-b ${errors.repeatPassword ? "border-red-700" : "border-zinc-800"} outline-none md:px-1 px-2 placeholder:text-2xl text-xl md:text-base placeholder:text-zinc-600 md:placeholder:text-[13px]`}
                                 {...register("repeatPassword")}
                             />
                             {isVisible.repeatPassword ? (
                                 <IoEye
                                     onClick={() => setIsVisible({ ...isVisible, repeatPassword: !isVisible.repeatPassword })}
-                                    className='absolute top-3 text-3xl  md:top-1 right-2 text-zinc-500' />
+                                    className='absolute top-3 text-3xl md:text-base md:top-1 right-2 text-zinc-500' />
                             ) : (
                                 <IoEyeOff
                                     onClick={() => setIsVisible({ ...isVisible, repeatPassword: !isVisible.repeatPassword })}
@@ -164,9 +174,12 @@ export default function SignIn() {
                                     +55
                                 </div>
                                 <input
-                                    placeholder='Phone'
+                                    placeholder='(00) 00000-0000'
                                     className={`bg-zinc-900 md:bg-zinc-950 py-3 md:py-0 bg-opacity-80 w-full border-b ${errors.phone ? "border-red-700" : "border-zinc-800"} outline-none md:px-1 px-2 placeholder:text-2xl text-xl md:text-base placeholder:text-zinc-600 md:placeholder:text-[13px]`}
                                     {...register('phone')}
+                                    onChange={(e) => {
+                                        e.target.value = formatNumber(e);
+                                    }}
                                 />
                             </div>
                             <AnimatePresence>

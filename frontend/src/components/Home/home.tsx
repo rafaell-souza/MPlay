@@ -159,6 +159,7 @@ export default function Home() {
                             ...(playing.results.length > 0 ? [playing.results[0]] : [])]
                             .map((movie, index) => (
                                 <div
+                                    onTouchStart={() => setIsUserInteraction(true)}
                                     className="w-full shrink-0 snap-center"
                                     ref={(el) => (bigCardRefs.current[index] = el)}
                                     key={index}
